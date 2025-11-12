@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booktown - 마이페이지</title>
+    <style>
+      :root {
+        --color-primary: #007bff; /* 짙은 포레스트 블루 */
+        --color-accent: #e9c46a; /* 빈티지 골드/옐로 */
+        --color-dark-footer: #3e2723;
+        --color-text-light: #666;
+        --color-text-dark: #333;
+        --color-border-light: #eee;
+        --color-border: #ddd;
+      }
+      /* ------------------------------------- */
+      /* 1. 기본 설정 및 초기화 */
+      /* ------------------------------------- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Noto Sans KR", sans-serif;
+        color: var(--color-text-dark);
+        line-height: 1.6;
+        background-color: var(--color-background); /* 베이지 배경 */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      a {
+        color: var(--color-primary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--color-accent); /* 호버 시 따뜻한 코랄 */
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+      }
+
+      input {
+        font-family: inherit;
+      }
+
+      /* 레이아웃 편의를 위한 .container 클래스 */
+      .container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 10px 20px;
+      }
+
+      .writing {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      #header {
+        border-bottom: 1px solid var(--color-primary); /* 딥 블루 라인 */
+        padding: 1px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      #header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo a {
+        font-size: 30px;
+        font-weight: 900;
+        color: var(--color-primary);
+      }
+
+      .gnb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: none;
+      }
+
+      /* 검색창 */
+      .gnb .search-box {
+        display: flex;
+        /* 검색 버튼을 입력창에 딱 붙이기 위해 테두리를 바깥으로 뺍니다. */
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-right: 0;
+        width: 360px; /* 검색창 너비 조정 */
+      }
+
+      .gnb .search-box input {
+        flex-grow: 1;
+        border: none;
+        padding: 8px 15px;
+        outline: none;
+      }
+
+      .gnb .search-box .search-btn {
+        padding: 8px 15px;
+        background-color: var(--color-primary);
+        color: white;
+        transition: background-color 0.2s ease;
+        border-radius: 0;
+        white-space: nowrap; /* "검색" 텍스트가 줄바꿈되지 않도록 */
+      }
+
+      .gnb .search-box .search-btn:hover {
+        background-color: #0056b3; /* 더 진한 블루 */
+      }
+
+      /* GNB 메뉴 */
+      .gnb ul {
+        display: flex;
+        list-style: none;
+        margin: 10px 10px;
+        gap: 20px;
+      }
+
+      .gnb ul li a {
+        font-weight: 500;
+        color: var(--color-text-dark);
+      }
+
+      /* 헤더 유저 메뉴 */
+      .user-menu {
+        display: flex; /* 장바구니와 로그인 버튼을 가로로 정렬 */
+        align-items: center;
+        gap: 15px; /* 버튼과 아이콘 사이 간격 */
+      }
+
+      /* 장바구니 아이콘 스타일 추가 */
+      .user-menu .cart-link {
+        color: black;
+        font-size: 16px;
+        font-weight: 700;
+        /* 유니코드나 아이콘 폰트 사용 시 패딩으로 크기 조정 */
+        padding: 5px;
+      }
+
+      .user-menu .login-btn-top {
+        border: 2px solid var(--color-accent); /* 코랄 테두리 */
+        color: var(--color-accent);
+        background-color: white;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+      }
+
+      .user-menu .login-btn-top:hover {
+        background-color: var(--color-accent);
+        color: white;
+      }
+
+      .container2 {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+
+      .card {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e6e9ef;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      .info-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .info-item label {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <h2 class="logo">
+          <img src="../img/high-five.png" alt="logo" width="100" height="100" />
+        </h2>
+
+        <nav class="gnb">
+          <div class="search-box">
+            <input type="text" placeholder="검색어를 입력하세요" />
+            <button class="search-btn">검색</button>
+          </div>
+
+          <ul class="writing">
+            <li><a href="">베스트 셀러</a></li>
+            <li><a href="./">추천도서</a></li>
+            <li><a href="./">국내 도서</a></li>
+          </ul>
+        </nav>
+
+        <div class="user-menu">
+          <a href="#" class="cart-link" title="장바구니로 이동">마이페이지 </a>
+          <a href="#" class="cart-link" title="장바구니로 이동"> 장바구니 </a>
+          <button type="button" class="login-btn-top">로그인</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container2">
+      <nav>
+        <button class="active" data-tab="info">내 정보</button>
+        <button data-tab="coupons">쿠폰</button>
+        <button data-tab="points">포인트</button>
+        <button data-tab="cart">장바구니</button>
+        <button data-tab="orders">주문내역</button>
+        <button data-tab="reviews">리뷰</button>
+        <button data-tab="likes">좋아요</button>
+      </nav>
+
+      <section id="tab-info" class="card">
+        <h2 class="section-title">내 정보</h2>
+        <div class="info-group">
+          <div class="info-item">
+            <label>이름</label>
+            <div>김태양</div>
+          </div>
+          <div class="info-item">
+            <label>이메일</label>
+            <div>sun.kim@example.com</div>
+          </div>
+          <div class="info-item">
+            <label>생일</label>
+            <div>1995-01-01</div>
+          </div>
+          <div class="info-item">
+            <label>연락처</label>
+            <div>010-1234-5678</div>
+          </div>
+          <div class="info-item">
+            <label>회원 등급</label>
+            <div>일반</div>
+          </div>
+          <div class="info-item">
+            <label>배송지</label>
+            <div>서울특별시 마포구 홍익로 12</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll("nav button");
+      // '내 정보' 섹션만 선택하도록 수정
+      const infoSection = document.getElementById("tab-info");
+      // 모든 섹션을 찾는 대신 '내 정보' 섹션만 제어
+      const sections = [infoSection];
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const tab = btn.dataset.tab;
+
+          // '내 정보' 탭을 클릭했는지 확인
+          if (tab === "info") {
+            infoSection.style.display = ""; // '내 정보' 보이기
+          } else {
+            infoSection.style.display = "none"; // 나머지 탭은 '내 정보' 숨기기
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

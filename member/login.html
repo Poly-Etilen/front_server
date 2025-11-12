@@ -10,8 +10,9 @@
       /* ------------------------------------- */
       /* **핵심 서점 테마 컬러 변수** */
       /* ------------------------------------- */
+
       :root {
-        --color-primary: #386641; /* 짙은 포레스트 그린 (더 깊고 차분함) */
+        --color-primary: #007bff; /* 짙은 포레스트 블루 (기존 그린을 파란색으로 변경) */
         --color-accent: #e9c46a; /* 빈티지 골드/옐로 (따뜻한 포인트) */
         --color-background: #fcf8f5; /* (기존과 동일) */
         --color-dark-footer: #3e2723; /* (기존과 동일) */
@@ -74,7 +75,7 @@
 
       #header {
         background-color: #ffffff;
-        border-bottom: 3px solid var(--color-primary); /* 딥 그린 라인 */
+        border-bottom: 3px solid var(--color-primary); /* 딥 블루 라인 */
         padding: 15px 0;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
@@ -95,32 +96,43 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 30rem;
+
+        margin: 10px;
       }
 
       /* 검색창 */
       .gnb .search-box {
         display: flex;
+        /* 검색 버튼을 입력창에 딱 붙이기 위해 테두리를 바깥으로 뺍니다. */
         border: 1px solid var(--color-border);
         border-radius: 20px;
-        overflow: hidden; /* 버튼의 둥근 모서리 적용을 위해 */
-        margin-right: 20px;
+        overflow: hidden;
+        margin-right: 0;
+        width: 360px; /* 검색창 너비 조정 */
       }
 
       .gnb .search-box input {
+        /* 인풋 필드가 남은 공간을 모두 차지하도록 */
+        flex-grow: 1;
         border: none;
         padding: 8px 15px;
         outline: none;
       }
 
       .gnb .search-box .search-btn {
-        padding: 8px 15px;
+        /* 버튼이 인풋과 같은 높이를 가지도록 */
+        padding: 8px 15px; /* 높이를 input과 맞추기 위해 조정 */
         background-color: var(--color-primary);
         color: white;
         transition: background-color 0.2s ease;
+        /* 버튼의 둥근 모서리가 사라지도록 */
+        border-radius: 0;
+        white-space: nowrap; /* "검색" 텍스트가 줄바꿈되지 않도록 */
       }
 
       .gnb .search-box .search-btn:hover {
-        background-color: #004d40; /* 더 진한 그린 */
+        background-color: #0056b3; /* 더 진한 블루 */
       }
 
       /* GNB 메뉴 */
@@ -147,14 +159,36 @@
         transition: all 0.2s ease;
       }
 
+      .user-menu {
+        display: flex; /* 장바구니와 로그인 버튼을 가로로 정렬 */
+        align-items: center;
+        gap: 15px; /* 버튼과 아이콘 사이 간격 */
+      }
+
+      /* 장바구니 아이콘 스타일 추가 */
+      .user-menu .cart-link {
+        color: black;
+        font-size: 16px;
+        font-weight: 700;
+        /* 유니코드나 아이콘 폰트 사용 시 패딩으로 크기 조정 */
+        padding: 5px;
+      }
+
       .user-menu .login-btn-top:hover {
         background-color: var(--color-accent);
         color: white;
       }
 
+      .writing {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
       /* ------------------------------------- */
       /* 3. 메인 콘텐츠 (로그인 영역) */
       /* ------------------------------------- */
+
       #container {
         flex-grow: 1; /* body 높이 100vh 중 헤더/푸터를 뺀 나머지 영역 차지 */
         display: flex;
@@ -233,14 +267,14 @@
       .login-form input:focus {
         outline: none;
         border-color: var(--color-primary);
-        box-shadow: 0 0 0 2px rgba(0, 121, 107, 0.2);
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
       }
 
       /* 메인 로그인 버튼 */
       .login-btn {
         width: 100%;
         padding: 15px;
-        background-color: var(--color-primary);
+        background-color: var(--color-primary); /* 파란색으로 변경 */
         color: white;
         font-size: 16px;
         font-weight: 700;
@@ -250,7 +284,7 @@
       }
 
       .login-btn:hover {
-        background-color: #004d40;
+        background-color: #0056b3; /* 더 진한 파란색 */
       }
 
       /* SNS 로그인 */
@@ -262,6 +296,23 @@
         color: var(--color-text-light);
         font-size: 13px;
         margin-bottom: 15px;
+      }
+
+      /* 회원가입 버튼 */
+      .login2-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: skyblue;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 4px;
+        margin-top: 10px;
+        transition: background-color 0.2s ease;
+      }
+
+      .login2-btn:hover {
+        background-color: #0056b3; /* 더 진한 파란색 */
       }
 
       .sns-btn {
@@ -326,7 +377,7 @@
     <header id="header">
       <div class="container">
         <h2 class="logo">
-          <img src="../img/h5.jpg" alt="logo" width="200" height="100" />
+          <img src="../img/high-five.png" alt="logo" width="100" height="100" />
         </h2>
 
         <nav class="gnb">
@@ -335,7 +386,7 @@
             <button class="search-btn">검색</button>
           </div>
 
-          <ul>
+          <ul class="writing">
             <li><a href="./">추천도서</a></li>
             <li><a href="./">국내 도서</a></li>
             <li><a href="">베스트 셀러</a></li>
@@ -343,6 +394,8 @@
         </nav>
 
         <div class="user-menu">
+          <a href="#" class="cart-link" title="장바구니로 이동">마이페이지 </a>
+          <a href="#" class="cart-link" title="장바구니로 이동"> 장바구니 </a>
           <button type="button" class="login-btn-top">로그인</button>
         </div>
       </div>
@@ -370,6 +423,7 @@
           </div>
 
           <button type="submit" class="login-btn">로그인</button>
+          <button type="submit" class="login2-btn">회원가입</button>
         </form>
 
         <div class="sns-login">
@@ -404,71 +458,14 @@
     </footer>
   </body>
 
-  <!-- <script>
-    // 1. 필요한 HTML 요소들을 찾습니다.
-    //    'login-form' 클래스를 가진 폼을 찾습니다.
-    //    (HTML의 <form class="login-form">에 id="login-form"을 추가하거나,
-    //     document.querySelector('.login-form')을 사용해도 됩니다.
-    //     여기서는 원본 HTML을 유지하기 위해 class 선택자를 사용하겠습니다.)
-    const loginForm = document.querySelector(".login-form");
-    const loginIdInput = document.getElementById("loginId");
-    const loginPwInput = document.getElementById("loginPw");
+  <script>
+    const signup = document.querySelector(".login2-btn");
 
-    // 2. 로그인 폼(form)에서 'submit' 이벤트가 발생할 때 실행될 함수를 연결합니다.
-    //    (사용자가 '로그인' 버튼을 클릭했거나 input에서 Enter를 쳤을 때)
-    loginForm.addEventListener("submit", async function (event) {
-      // (중요) form이 원래 가진 기본 동작(새로고침)을 막습니다.
-      event.preventDefault();
-
-      // 3. 사용자가 입력한 값을 가져옵니다.
-      const userId = loginIdInput.value;
-      const userPw = loginPwInput.value;
-
-      // (선택) 간단한 유효성 검사
-      if (!userId || !userPw) {
-        alert("아이디와 비밀번호를 모두 입력해주세요.");
-        return;
-      }
-
-      // 4. 백엔드와 "소통"하는 핵심 부분 (fetch 사용)
-      try {
-        // (주의!) '/api/login'은 실제 백엔드 개발자와 약속한 "API 주소"입니다.
-        // 이 주소로 우리가 가진 데이터를 POST 방식으로 보냅니다.
-        const response = await fetch("/api/login", {
-          method: "POST", // 데이터를 '보낼' 때는 주로 POST를 씁니다.
-          headers: {
-            // 우리가 보내는 데이터가 'JSON' 형식임을 알려줍니다.
-            "Content-Type": "application/json",
-          },
-          // JavaScript 객체를 JSON 문자열로 변환하여 '몸통(body)'에 실어 보냅니다.
-          body: JSON.stringify({
-            id: userId,
-            password: userPw,
-          }),
-        });
-
-        // 5. 백엔드로부터 "응답"을 받습니다.
-        // 응답이 성공적인지(HTTP 상태 코드가 200-299인지) 확인합니다.
-        if (response.ok) {
-          // 성공했다면, 백엔드가 보내준 데이터를 JSON으로 변환합니다.
-          const result = await response.json();
-          console.log("로그인 성공:", result);
-          alert("로그인에 성공했습니다!");
-          // 예: 로그인 성공 시 메인 페이지로 이동
-          // location.href = "/";
-        } else {
-          // 서버가 "로그인 실패" (예: 401 Unauthorized) 응답을 보낸 경우
-          const errorResult = await response.json();
-          alert(
-            "로그인 실패: " +
-              (errorResult.message || "아이디나 비밀번호를 확인하세요.")
-          );
-        }
-      } catch (error) {
-        // 6. 네트워크 오류 등 "소통" 자체에 실패한 경우
-        console.error("로그인 요청 중 오류 발생:", error);
-        alert("로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
-      }
-    });
-  </script> -->
+    // 2. 버튼이 존재하면 클릭 이벤트를 연결합니다.
+    if (signup) {
+      loginButton.addEventListener("click", function () {
+        window.location.href = "/member/signup.html";
+      });
+    }
+  </script>
 </html>
