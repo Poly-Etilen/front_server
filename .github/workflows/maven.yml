@@ -15,11 +15,24 @@ on:
     branches: [ "main", "dev", "feature/**" ]
 
 jobs:
-  call-deploy-workflow:
-    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow.yml@main
-    
-    secrets:
-      SSH_IP: ${{ secrets.SSH_IP }}
-      SSH_ID: ${{ secrets.SSH_ID }}
-      SSH_PW: ${{ secrets.SSH_PW }}
-      SSH_PORT: ${{ secrets.SSH_PORT }}
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: upload file
+
+        uses: appleboy/scp-action@master
+
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_ID }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./"
+
+          target: "/nginx/site.config"
+
+          rm: true
