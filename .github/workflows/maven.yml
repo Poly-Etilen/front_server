@@ -16,7 +16,7 @@ on:
 
 jobs:
   call-deploy-workflow:
-    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow@main
+    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow.yml@main
     
     secrets:
       SSH_IP: ${{ secrets.SSH_IP }}
