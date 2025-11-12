@@ -371,6 +371,36 @@
       .footer-info .copyright strong {
         color: #c0c0c0;
       }
+      /* ==== 공통 우측 사용자 메뉴 (텍스트 2 + 노란 pill 1) ==== */
+      .user-menu{
+          display:flex; align-items:center; gap:14px; margin-left:auto;
+      }
+
+      /* 기본 텍스트 링크(마이페이지/장바구니) */
+      .user-menu .user-link{
+          display:inline-block;
+          font-weight:700;
+          color:#333;
+          text-decoration:none;
+          padding:6px 8px;
+      }
+      .user-menu .user-link:hover{ color:var(--color-primary); }
+
+      /* 로그인만 노란 pill 버튼 */
+      .user-menu .user-link.pill{
+          border:2px solid var(--color-accent);
+          color:var(--color-accent);
+          background:#fff;
+          padding:6px 14px;
+          border-radius:20px;
+      }
+      .user-menu .user-link.pill:hover{
+          background:var(--color-accent);
+          color:#fff;
+      }
+
+
+
     </style>
   </head>
   <body>
@@ -393,11 +423,12 @@
           </ul>
         </nav>
 
-        <div class="user-menu">
-          <a href="#" class="cart-link" title="장바구니로 이동">마이페이지 </a>
-          <a href="#" class="cart-link" title="장바구니로 이동"> 장바구니 </a>
-          <button type="button" class="login-btn-top">로그인</button>
-        </div>
+          <div class="user-menu">
+              <a class="user-link" href="./mypage.html">마이페이지</a>
+              <a class="user-link" href="./cart.html">장바구니</a>
+              <a class="user-link pill" href="./login.html">로그인</a>
+          </div>
+
       </div>
     </header>
 
