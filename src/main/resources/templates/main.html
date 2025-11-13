@@ -928,6 +928,66 @@
           // 실제 서비스에서는 /search?q= 로 라우팅
           alert(`검색: ${q}`);
         });
+
+
+      const subCategories = {
+        domestic: [
+          { name: "소설", link: "#", thumb: "소설" },
+          { name: "시/에세이", link: "#", thumb: "시/에세이" },
+          { name: "인문", link: "#", thumb: "인문" },
+          { name: "사회/정치", link: "#", thumb: "사회/정치" },
+          { name: "경제/경영", link: "#", thumb: "경제/경영" },
+          { name: "자기계발", link: "#", thumb: "자기계발" },
+          { name: "과학", link: "#", thumb: "과학" },
+          { name: "여행", link: "#", thumb: "여행" },
+        ],
+        foreign: [
+          { name: "영미소설", link: "#", thumb: "영미소설" },
+          { name: "일본도서", link: "#", thumb: "일본도서" },
+          // ... 나머지 외국도서 항목
+        ],
+        ebook: [
+          { name: "전자책 소설", link: "#", thumb: "e소설" },
+          { name: "전자책 만화", link: "#", thumb: "e만화" },
+          // ... 나머지 eBook 항목
+        ],
+        // ... 나머지 카테고리 데이터
+      };
+
+      // 탭 클릭 이벤트 수정
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // 탭 선택 표시 로직 (기존)
+          tabBtns.forEach((b) => b.setAttribute("aria-selected", "false"));
+          btn.setAttribute("aria-selected", "true");
+
+          // 패널 숨김 로직 (기존)
+          Object.values(panels).forEach((p) => (p.hidden = true));
+
+          const key = btn.dataset.tab;
+          const panel = panels[key];
+
+          if (panel) {
+            panel.hidden = false;
+
+            // ⚠️ 동적 주입 로직 (수정된 부분)
+            // 이미 패널에 항목이 있으면 DOM 조작을 최소화하기 위해 건너뛰고,
+            // '국내도서'는 HTML에 이미 채워져 있으므로 건너뜁니다.
+            if (key !== 'domestic' && subCategories[key] && !panel.dataset.filled) {
+              panel.innerHTML = ''; // 기존 임시 내용 삭제
+
+              subCategories[key].forEach(cat => {
+                const a = document.createElement("a");
+                a.className = "cat";
+                a.href = cat.link;
+                a.innerHTML = `<div class="thumb">${cat.thumb}</div><span>${cat.name}</span>`;
+                panel.appendChild(a);
+              });
+              panel.dataset.filled = "1"; // 채웠음을 표시
+            }
+          }
+        });
+      });
     </script>
   </body>
 </html>
