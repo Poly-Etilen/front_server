@@ -40,7 +40,6 @@ jobs:
           host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           password: ${{ secrets.SSH_PW }}
-          # key: ${{ secrets.SSH_KEY }} # (보안을 위해 key 사용을 강력히 권장합니다)
           port: ${{ secrets.SSH_PORT }}
 
           # 'target/' 디렉토리 아래에 생성된 .jar 파일을 전송합니다.
@@ -59,7 +58,6 @@ jobs:
           host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           password: ${{ secrets.SSH_PW }}
-          # key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             # 1. .jar 파일이 업로드된 디렉토리로 이동
@@ -80,5 +78,5 @@ jobs:
             # 4. 새로운 .jar 파일 실행
             # nohup: SSH 세션이 끊겨도 프로세스가 계속 실행되도록 함
             # > app.log 2>&1 &: 표준 출력(stdout)과 표준 에러(stderr)를 app.log 파일에 기록하고, 백그라운드에서 실행
-            echo "Starting new process: $JAR_NAME"
-            nohup java -jar $JAR_NAME > app.log 2>&1 &
+            echo "Starting new process: $JAR_NAME on port 10481"
+            nohup java -jar -Dserver.port=10481 $JAR_NAME > app.log 2>&1 &
