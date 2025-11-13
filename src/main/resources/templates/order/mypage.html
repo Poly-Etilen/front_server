@@ -256,7 +256,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 0;
+        /* padding: 15px 0; -> 높이 축소 */
+        padding: 10px 0;
         border-bottom: 1px dashed var(--color-border-light);
       }
       .info-item:last-child {
@@ -272,6 +273,22 @@
         color: var(--color-text-dark);
         flex-grow: 1;
         text-align: right;
+      }
+
+      .btn-edit {
+        display: block;
+        width: 100%;
+        padding: 12px 0;
+        background-color: var(--color-accent); /* 빈티지 골드 색상 사용 */
+        color: white;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-edit:hover {
+        background-color: #d6af50; /* 약간 어둡게 */
       }
 
       /* ------------------------------------- */
@@ -451,6 +468,7 @@
         border-radius: 8px;
         background-color: #f9f9f9;
       }
+
     </style>
   </head>
   <body>
@@ -467,11 +485,6 @@
             <button class="search-btn">검색</button>
           </div>
 
-          <!-- <ul class="writing">
-            <li><a href="">베스트 셀러</a></li>
-            <li><a href="./">신간</a></li>
-            <li><a href="./">국내 도서</a></li>
-          </ul> -->
         </nav>
 
         <div class="user-menu">
@@ -485,7 +498,7 @@
     </header>
 
     <div class="container2">
-      <nav>
+      <nav class="box">
         <button class="active" data-tab="info">내 정보</button>
         <button data-tab="coupons">쿠폰</button>
         <button data-tab="points">포인트</button>
@@ -499,7 +512,7 @@
         <div class="info-group">
           <div class="info-item">
             <label>이름</label>
-            <div>김태양</div>
+            <div></div>
           </div>
           <div class="info-item">
             <label>이메일</label>
@@ -522,6 +535,10 @@
             <div>서울특별시 마포구 홍익로 12</div>
           </div>
         </div>
+
+        <br/>
+
+        <button type="button" class="btn-edit">수정</button>
       </section>
 
       <section id="tab-coupons" class="tab-content">
