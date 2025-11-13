@@ -12,9 +12,7 @@ on:
 jobs:
   build-and-deploy-java: # Job 이름을 Java 배포용으로 변경
 
-    # main 브랜치에 push 될 때만 배포를 실행합니다.
-    # (dev나 feature 브랜치에서는 빌드/테스트만 하도록 설정할 수도 있습니다)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
 
     runs-on: ubuntu-latest
 
@@ -22,8 +20,7 @@ jobs:
       # 1. 코드 체크아웃
       - uses: actions/checkout@v4
 
-      # 2. [추가] JDK 17 설정 (프로젝트에 맞는 버전으로 변경하세요: '11', '17', '21' 등)
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -34,18 +31,18 @@ jobs:
       # 이 스텝이 성공하면 'target/' 디렉토리에 .jar 파일이 생성됩니다.
       - name: Build with Maven
         run: mvn clean package
-        # (참고: Gradle을 사용하신다면 'run: ./gradlew build' 로 변경)
 
-      # 4. [수정] 빌드된 .jar 파일을 SCP를 이용해 서버로 전송
+
+      # 4. 빌드된 .jar 파일을 SCP를 이용해 서버로 전송
       - name: Upload JAR file via SCP
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           password: ${{ secrets.SSH_PW }}
+          # key: ${{ secrets.SSH_KEY }} # (보안을 위해 key 사용을 강력히 권장합니다)
           port: ${{ secrets.SSH_PORT }}
 
-          # [수정된 부분]
           # 'target/' 디렉토리 아래에 생성된 .jar 파일을 전송합니다.
           source: "target/*.jar"
 
@@ -62,6 +59,7 @@ jobs:
           host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           password: ${{ secrets.SSH_PW }}
+          # key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             # 1. .jar 파일이 업로드된 디렉토리로 이동
