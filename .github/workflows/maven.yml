@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.SSH_ID }}
           password: ${{ secrets.SSH_PW }}
           port: ${{ secrets.SSH_PORT }}
-          source: BOOK/, member/, order/
+          source: index.html, member/, order/
 
           target: ~/www/nhnbook
 
