@@ -31,6 +31,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "./"
 
-          target: "/nginx/site.config"
+          target: "~/"
 
           rm: true
