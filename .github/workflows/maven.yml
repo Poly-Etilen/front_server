@@ -1,7 +1,7 @@
 # This workflow will build a Java project (like Spring Boot with Thymeleaf)
 # using Maven, and deploy the executable JAR file to a server.
 
-name: Backend CI/CD (Java/Thymeleaf)
+name: Front CI/CD (Java/Thymeleaf)
 
 on:
   push:
@@ -32,27 +32,25 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-
-      # 4. 빌드된 .jar 파일을 SCP를 이용해 서버로 전송
-      - name: Upload JAR file via SCP
-        uses: appleboy/scp-action@master
+          # 2. Docker Hub 로그인
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SSH_IP }}
-          username: ${{ secrets.SSH_ID }}
-          password: ${{ secrets.SSH_PW }}
-          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.DOCKER_USERNAME }} # (시크릿 이름 확인)
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-          # 'target/' 디렉토리 아래에 생성된 .jar 파일을 전송합니다.
-          source: "target/*.jar"
 
-          # 'source'에서 지정한 파일을 이 'target' 디렉토리로 전송합니다.
-          target: "~/www/nhnbook"
+      # 3. Docker 이미지 빌드 및 푸시
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # 2번에서 정의한 'front_server' 이미지 이름
+          tags: fbxogns123/front-server:latest
 
-          # 'target/' 디렉토리 구조를 제거하고 파일(.jar)만 전송합니다.
-          strip_components: 1
-
-      # 5. [추가] SSH를 이용해 서버에서 .jar 파일 실행
-      - name: Run JAR file on server via SSH
+      # 4. SSH로 B/G 배포 스크립트 실행
+      - name: Run Blue/Green Deploy Script on Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -60,28 +58,43 @@ jobs:
           password: ${{ secrets.SSH_PW }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # 1. .jar 파일이 업로드된 디렉토리로 이동
-            cd ~/www/nhnbook
+            # 이 스크립트는 'front_server'만 재시작하고 Nginx 트래픽을 전환합니다.
             
-            # 2. 방금 업로드한 .jar 파일의 이름을 찾습니다 (가장 최신 파일)
-            JAR_NAME=$(ls -t *.jar | head -n 1)
+            DEPLOY_PATH="~/www/nhnbook"
+            SERVICE_NAME="front_server" # ⬅️ 이 서비스만 배포
+            NGINX_CONF_PATH="/home/backend/be12-team5/nginx" # ⬅️ Nginx 경로 (권한 문제 확인 필요)
             
-            # 3. [수정됨] 10481 포트를 사용하는 기존 프로세스를 찾아 종료 (더 확실한 방법)
-            # lsof -t -i:[PORT] 는 해당 포트를 사용하는 PID만 깔끔하게 반환합니다.
-            PID=$(lsof -t -i:10481)
-            
-            if [ -n "$PID" ]; then
-              echo "Stopping existing process on port 10481 (PID: $PID)..."
-              kill -15 $PID
-              sleep 5 # 종료 대기
+            cd $DEPLOY_PATH
+
+            # --- 1. 현재 활성 'Front' 포트 확인 ---
+            # (Nginx 권한 문제 해결 후 이 경로 사용)
+            CURRENT_FRONT_PORT=$(grep -o '[0-9]\{5\}' $NGINX_CONF_PATH/conf.d/front_upstream.conf)
+
+            # --- 2. 배포할 대상(Idle) 환경 결정 ---
+            if [ "$CURRENT_FRONT_PORT" == "10481" ]; then
+              echo "Current Front is BLUE (10481). Deploying to GREEN (10482)..."
+              TARGET_COMPOSE_FILE="docker-compose-green.yml"
+              TARGET_FRONT_PORT="10482"
+            else
+              echo "Current Front is GREEN (10482). Deploying to BLUE (10481)..."
+              TARGET_COMPOSE_FILE="docker-compose-blue.yml"
+              TARGET_FRONT_PORT="10481"
             fi
+
+            # --- 3. 비활성(Idle) 환경에 새 'front_server' 배포 ---
+            docker-compose -f $TARGET_COMPOSE_FILE pull $SERVICE_NAME
+            docker-compose -f $TARGET_COMPOSE_FILE up -d --no-deps $SERVICE_NAME
+
+            # --- 4. (중요) 헬스체크 (간단히 sleep) ---
+            echo "Waiting for 30 seconds for service to start..."
+            sleep 30 
             
-            # 4. [수정됨] 'java' 대신 'which java'로 찾은 절대 경로를 사용합니다.
-            # 1단계에서 'which java'로 찾은 경로를 아래 JAVA_PATH 변수에 붙여넣으세요!
-            JAVA_PATH="/usr/local/java/java21/bin/java" # <--- ★★★ 여기를 알려주신 경로로 수정했습니다 ★★★
+            # --- 5. Nginx 'Front' 트래픽 전환 ---
+            echo "Switching Nginx traffic to $TARGET_FRONT_PORT..."
+            echo "server 127.0.0.1:$TARGET_FRONT_PORT;" > $NGINX_CONF_PATH/conf.d/front_upstream.conf
+
+            # --- 6. Nginx 설정 리로드 (중단 없음) ---
+            sudo nginx -s reload
             
-            echo "Starting new process: $JAR_NAME (using embedded port)"
-            echo "Using Java Path: $JAVA_PATH"
-            
-            # $JAVA_PATH를 따옴표로 감싸서 실행
-            nohup "$JAVA_PATH" -jar $JAR_NAME > app.log 2>&1 &
+            echo "Deployment successful! Front traffic now routed to $TARGET_FRONT_PORT."
+            docker image prune -f
