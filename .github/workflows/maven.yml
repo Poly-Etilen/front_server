@@ -61,29 +61,32 @@ jobs:
             # 이 스크립트는 'front_server'만 재시작하고 Nginx 트래픽을 전환합니다.
             
             DEPLOY_PATH="~/www/nhnbook"
-            SERVICE_NAME="front_server" # ⬅️ 이 서비스만 배포
-            NGINX_CONF_PATH="/home/backend/be12-team5/nginx" # ⬅️ Nginx 경로 (권한 문제 확인 필요)
+            SERVICE_NAME="front_server"
+            NGINX_CONF_PATH="/home/backend/be12-team5/nginx"
+            
+            # --- 🔵 블루/그린 포트 정의 ---
+            BLUE_PORT="10481"
+            GREEN_PORT="10491" # ⬅️ '10482'가 아닌 '10491'로 수정
             
             cd $DEPLOY_PATH
 
             # --- 1. 현재 활성 'Front' 포트 확인 ---
-            # (Nginx 권한 문제 해결 후 이 경로 사용)
             CURRENT_FRONT_PORT=$(grep -o '[0-9]\{5\}' $NGINX_CONF_PATH/conf.d/front_upstream.conf)
 
             # --- 2. 배포할 대상(Idle) 환경 결정 ---
-            if [ "$CURRENT_FRONT_PORT" == "10481" ]; then
-              echo "Current Front is BLUE (10481). Deploying to GREEN (10482)..."
+            if [ "$CURRENT_FRONT_PORT" == "$BLUE_PORT" ]; then
+              echo "Current Front is BLUE ($BLUE_PORT). Deploying to GREEN ($GREEN_PORT)..."
               TARGET_COMPOSE_FILE="docker-compose-green.yml"
-              TARGET_FRONT_PORT="10482"
+              TARGET_FRONT_PORT=$GREEN_PORT
             else
-              echo "Current Front is GREEN (10482). Deploying to BLUE (10481)..."
+              echo "Current Front is GREEN ($GREEN_PORT). Deploying to BLUE ($BLUE_PORT)..."
               TARGET_COMPOSE_FILE="docker-compose-blue.yml"
-              TARGET_FRONT_PORT="10481"
+              TARGET_FRONT_PORT=$BLUE_PORT
             fi
 
             # --- 3. 비활성(Idle) 환경에 새 'front_server' 배포 ---
-            docker-compose -f $TARGET_COMPOSE_FILE pull $SERVICE_NAME
-            docker-compose -f $TARGET_COMPOSE_FILE up -d --no-deps $SERVICE_NAME
+            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE pull $SERVICE_NAME
+            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE up -d --no-deps $SERVICE_NAME
 
             # --- 4. (중요) 헬스체크 (간단히 sleep) ---
             echo "Waiting for 30 seconds for service to start..."
