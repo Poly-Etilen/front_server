@@ -65,8 +65,8 @@ jobs:
             NGINX_CONF_PATH="/home/backend/be12-team5/nginx"
             
             # --- 🔵 블루/그린 포트 정의 ---
-            BLUE_PORT="10481"
-            GREEN_PORT="10491" # ⬅️ '10482'가 아닌 '10491'로 수정
+            BLUE_PORT="10483"
+            GREEN_PORT="10484"
             
             cd $DEPLOY_PATH
 
