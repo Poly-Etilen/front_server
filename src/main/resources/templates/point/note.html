@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HIGH-FIVE BOOKS - 독후감 작성</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --color-primary: #007bff;
+            --color-accent: #e9c46a;
+            --color-text-dark: #333;
+            --color-text-light: #666;
+            --color-border: #ddd;
+            --color-border-light: #eee;
+            --color-bg-soft: #f8fbff;
+        }
+
+        * { box-sizing: border-box; margin:0; padding:0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+            color: var(--color-text-dark);
+            background:#fafafa;
+        }
+
+        a { color: var(--color-primary); text-decoration:none; }
+        a:hover { color:#0056b3; }
+
+        /* (필요하면 mypage와 동일한 헤더로 교체해도 됩니다) */
+        header {
+            border-bottom:3px solid var(--color-primary);
+            background:#fff;
+        }
+        header .container {
+            max-width:1100px;
+            margin:0 auto;
+            padding:10px 20px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .logo {
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .logo-text {
+            font-size:21px;
+            font-weight:900;
+            color:#000080;
+        }
+
+        main {
+            max-width:900px;
+            margin:30px auto;
+            padding:0 20px 40px;
+        }
+
+        /* 브레드크럼 */
+        .breadcrumb {
+            font-size:13px;
+            color:var(--color-text-light);
+            margin-bottom:15px;
+        }
+        .breadcrumb span+span::before {
+            content:">";
+            margin:0 4px;
+            color:#bbb;
+        }
+
+        .page-title {
+            font-size:24px;
+            font-weight:800;
+            margin-bottom:15px;
+        }
+        .page-sub {
+            font-size:14px;
+            color:var(--color-text-light);
+            margin-bottom:20px;
+        }
+
+        /* 상단 도서정보 + 포인트 안내 */
+        .top-grid {
+            display:grid;
+            grid-template-columns:2fr 1.5fr;
+            gap:16px;
+            margin-bottom:20px;
+        }
+        .book-card, .policy-card {
+            background:#fff;
+            border-radius:12px;
+            padding:16px 18px;
+            border:1px solid var(--color-border-light);
+            box-shadow:0 2px 6px rgba(0,0,0,0.02);
+        }
+        .book-info-wrap {
+            display:flex;
+            gap:12px;
+        }
+        .book-thumb {
+            width:70px;
+            height:100px;
+            border-radius:6px;
+            object-fit:cover;
+            border:1px solid var(--color-border-light);
+        }
+        .book-title {
+            font-size:16px;
+            font-weight:700;
+            margin-bottom:4px;
+        }
+        .book-meta {
+            font-size:13px;
+            color:var(--color-text-light);
+            margin-bottom:2px;
+        }
+        .book-meta strong { color:var(--color-text-dark); }
+
+        .policy-card h3 {
+            font-size:14px;
+            font-weight:700;
+            margin-bottom:8px;
+        }
+        .policy-card ul {
+            list-style:none;
+            font-size:13px;
+            color:var(--color-text-light);
+        }
+        .policy-card li { margin-bottom:4px; }
+        .policy-highlight {
+            margin-top:8px;
+            padding:8px 10px;
+            border-radius:6px;
+            background:var(--color-bg-soft);
+            font-size:13px;
+        }
+
+        /* 독후감 작성 폼 */
+        .note-card {
+            background:#fff;
+            border-radius:12px;
+            padding:20px 22px;
+            border:1px solid var(--color-border-light);
+            box-shadow:0 2px 6px rgba(0,0,0,0.02);
+            margin-bottom:20px;
+        }
+        .note-row {
+            margin-bottom:16px;
+        }
+        .note-label {
+            font-size:14px;
+            font-weight:600;
+            margin-bottom:6px;
+        }
+        .note-label .required {
+            color:#e74c3c;
+            margin-left:2px;
+        }
+        .note-input,
+        .note-textarea {
+            width:100%;
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:10px 12px;
+            font-family:inherit;
+            font-size:14px;
+        }
+        .note-input:focus,
+        .note-textarea:focus {
+            outline:none;
+            border-color:var(--color-primary);
+            box-shadow:0 0 0 2px rgba(0,123,255,0.12);
+        }
+        .note-textarea {
+            min-height:220px;
+            resize:vertical;
+            line-height:1.6;
+        }
+
+        /* 별점 */
+        .rating-wrap {
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+        .star-group {
+            display:inline-flex;
+            flex-direction:row-reverse;
+        }
+        .star-group input {
+            display:none;
+        }
+        .star-group label {
+            font-size:24px;
+            color:#ccc;
+            cursor:pointer;
+            padding:0 2px;
+        }
+        .star-group input:checked ~ label,
+        .star-group label:hover,
+        .star-group label:hover ~ label {
+            color:#ffc107;
+        }
+        .rating-text {
+            font-size:13px;
+            color:var(--color-text-light);
+        }
+
+        /* 글자수 */
+        .char-counter {
+            text-align:right;
+            margin-top:6px;
+            font-size:12px;
+            color:var(--color-text-light);
+        }
+        .char-counter span.current {
+            font-weight:600;
+            color:var(--color-primary);
+        }
+        .char-counter span.warning {
+            color:#e67e22;
+            font-weight:600;
+        }
+        .char-counter span.error {
+            color:#e74c3c;
+            font-weight:600;
+        }
+
+        /* 버튼 영역 */
+        .btn-row {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-top:10px;
+        }
+        .btn-left,
+        .btn-right {
+            display:flex;
+            gap:10px;
+        }
+        .btn {
+            padding:10px 18px;
+            font-size:14px;
+            border-radius:999px;
+            border:1px solid transparent;
+            background:#fff;
+            cursor:pointer;
+            font-weight:600;
+        }
+        .btn-outline {
+            border-color:var(--color-border);
+            color:var(--color-text-dark);
+        }
+        .btn-outline:hover {
+            border-color:var(--color-primary);
+            color:var(--color-primary);
+        }
+        .btn-primary {
+            background:var(--color-primary);
+            color:#fff;
+            border-color:var(--color-primary);
+        }
+        .btn-primary:hover {
+            background:#0056b3;
+        }
+        .btn-danger {
+            border-color:#e74c3c;
+            color:#e74c3c;
+        }
+        .btn-danger:hover {
+            background:#e74c3c;
+            color:#fff;
+        }
+
+        /* 모드별 버튼 표시 */
+        .btn-group-write,
+        .btn-group-view,
+        .btn-group-edit { display:none; }
+
+        body.mode-write  .btn-group-write { display:flex; }
+        body.mode-view   .btn-group-view  { display:flex; }
+        body.mode-edit   .btn-group-edit  { display:flex; }
+
+        /* 보기 모드에서 읽기전용 스타일 */
+        body.mode-view .note-input,
+        body.mode-view .note-textarea {
+            background:#f7f7f7;
+            border-style:dashed;
+        }
+        body.mode-view .note-input,
+        body.mode-view .note-textarea {
+            pointer-events:none;
+        }
+
+        /* 반응형 */
+        @media (max-width:768px) {
+            .top-grid {
+                grid-template-columns:1fr;
+            }
+            .btn-row {
+                flex-direction:column;
+                align-items:flex-end;
+                gap:8px;
+            }
+        }
+    </style>
+</head>
+
+<!-- 기본은 작성 모드. 보기/수정 모드에서는 body 클래스만 바꿔주면 됩니다.
+     예) <body class="mode-view">, <body class="mode-edit"> -->
+<body class="mode-write">
+
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="../img/logo.png" alt="HIGH-FIVE 로고" width="60" height="60">
+            <div class="logo-text">HIGH-FIVE BOOKS</div>
+        </div>
+        <!-- 우측 메뉴는 필요하면 mypage와 동일하게 추가 -->
+    </div>
+</header>
+
+<main>
+    <!-- 브레드크럼 -->
+    <div class="breadcrumb">
+        <span><a href="/order/mypage.html">마이페이지</a></span>
+        <span><a href="/order/mypage.html#tab-reading">독후감</a></span>
+        <span>프론트엔드 개발자를 위한 자바스크립트 바이블</span>
+    </div>
+
+    <h1 class="page-title">독후감 작성</h1>
+    <p class="page-sub">
+        아래 양식을 작성하면 독후감 1편당 <strong>500P</strong>가 적립됩니다. (월 최대 3편)
+    </p>
+
+    <!-- 상단 카드 영역 -->
+    <div class="top-grid">
+        <!-- 도서 정보 -->
+        <section class="book-card">
+            <div class="book-info-wrap">
+                <img src="../img/book1.jpeg" alt="표지" class="book-thumb">
+                <div>
+                    <div class="book-title">프론트엔드 개발자를 위한 자바스크립트 바이블</div>
+                    <div class="book-meta">홍길동 · HIGH-FIVE 출판사</div>
+                    <div class="book-meta">
+                        구매일 <strong>2025-11-10</strong> · 주문번호 <strong>20251110-000123</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 포인트 정책 안내 -->
+        <section class="policy-card">
+            <h3>포인트 적립 기준</h3>
+            <ul>
+                <li>· 본문 500자 이상 작성 시 500P 적립</li>
+                <li>· 도서 1권당 독후감 1회만 적립</li>
+                <li>· 월 최대 3편까지 포인트 지급</li>
+            </ul>
+            <div class="policy-highlight">
+                ※ 관리자 검수 후 부적절한 내용(욕설, 광고, 도배 등)은 삭제 및 포인트 회수될 수 있습니다.
+            </div>
+        </section>
+    </div>
+
+    <!-- 독후감 폼 -->
+    <section class="note-card">
+        <!-- 별점 -->
+        <div class="note-row">
+            <div class="note-label">별점 평가<span class="required">*</span></div>
+            <div class="rating-wrap">
+                <div class="star-group">
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                </div>
+                <div class="rating-text" id="rating-text">평가를 선택해 주세요.</div>
+            </div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="note-row">
+            <div class="note-label">독후감 제목<span class="required">*</span></div>
+            <input type="text" class="note-input" id="note-title"
+                   placeholder="예) 자바스크립트 사고방식을 완전히 바꿔준 책">
+        </div>
+
+        <!-- 본문 -->
+        <div class="note-row">
+            <div class="note-label">독후감 내용<span class="required">*</span></div>
+            <textarea class="note-textarea" id="note-body"
+                      placeholder="책을 읽고 느낀 점, 인상 깊었던 문장, 실무/일상에 적용하고 싶은 점 등을 자유롭게 작성해 주세요. (500자 이상)"></textarea>
+            <div class="char-counter" id="char-counter">
+                <span class="current">0</span> / 500자
+            </div>
+        </div>
+
+        <!-- 버튼 -->
+        <div class="btn-row">
+            <div class="btn-left">
+                <button type="button" class="btn btn-outline" onclick="history.back()">목록으로</button>
+            </div>
+
+            <!-- 작성 모드 버튼 -->
+            <div class="btn-right btn-group-write">
+                <button type="button" class="btn btn-outline">임시 저장</button>
+                <button type="button" class="btn btn-primary">등록하기</button>
+            </div>
+
+            <!-- 보기 모드 버튼 -->
+            <div class="btn-right btn-group-view">
+                <button type="button" class="btn btn-outline">수정하기</button>
+                <button type="button" class="btn btn-danger">삭제</button>
+            </div>
+
+            <!-- 수정 모드 버튼 -->
+            <div class="btn-right btn-group-edit">
+                <button type="button" class="btn btn-outline">수정 취소</button>
+                <button type="button" class="btn btn-primary">수정 완료</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // 별점 선택 시 텍스트 변경
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    const ratingText = document.getElementById('rating-text');
+    const ratingMessages = {
+        1: '1점 · 많이 아쉬운 책이었어요.',
+        2: '2점 · 기대에 다소 못 미쳤어요.',
+        3: '3점 · 무난하게 읽을 만했어요.',
+        4: '4점 · 추천할 만한 좋은 책이에요.',
+        5: '5점 · 강력 추천! 인생 책 후보예요.'
+    };
+
+    ratingInputs.forEach((input) => {
+        input.addEventListener('change', () => {
+            const val = input.value;
+            ratingText.textContent = ratingMessages[val] || '평가를 선택해 주세요.';
+        });
+    });
+
+    // 글자수 카운트
+    const bodyTextarea = document.getElementById('note-body');
+    const counter = document.getElementById('char-counter');
+
+    function updateCounter() {
+        const len = bodyTextarea.value.trim().length;
+        const currentSpan = counter.querySelector('.current');
+        currentSpan.textContent = len;
+
+        // 상태 색상
+        currentSpan.classList.remove('warning', 'error');
+        if (len === 0) {
+            currentSpan.classList.add('error');
+        } else if (len < 500) {
+            currentSpan.classList.add('warning');
+        }
+    }
+
+    bodyTextarea.addEventListener('input', updateCounter);
+    updateCounter();
+</script>
+</body>
+</html>

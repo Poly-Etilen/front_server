@@ -88,11 +88,8 @@
       }
 
       .logo {
-        /* ✅ 수정: 이미지와 .brand를 Flex 아이템으로 만들어 나란히 배치 */
         display: flex;
-        /* ✅ 수정: 이미지와 텍스트를 수직 중앙 정렬 */
         align-items: center;
-        /* ✅ 추가: 이미지와 텍스트 사이의 간격 설정 */
         gap: 10px;
       }
 
@@ -104,13 +101,11 @@
         flex-direction: row;
       }
       .logo .brand {
-        font-size: 21px; /* 텍스트 크기 */
+        font-size: 21px;
         font-weight: 900;
         color: #000080;
-        /* margin-top: 5px; 제거 (align-items: center로 수직 정렬하므로 불필요) */
-        /* display: flex; 제거 (brand 내부 요소가 아니므로 불필요) */
-        margin-top: 0; /* ✅ 수정: 불필요한 마진 제거 */
-        display: block; /* ✅ 수정: flex 해제 후 block으로 설정 */
+        margin-top: 0;
+        display: block;
       }
 
       .gnb {
@@ -197,11 +192,11 @@
       }
 
       .order-content {
-        flex: 2; /* 주문 정보 입력 영역이 더 넓게 */
+        flex: 2;
       }
 
       .order-summary {
-        flex: 1; /* 결제 요약 영역 */
+        flex: 1;
         position: sticky; /* 스크롤 시 고정 */
         top: 20px;
         height: fit-content;
