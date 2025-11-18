@@ -10,7 +10,6 @@ jobs:
   build-push-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # ... (빌드, 푸시 단계는 동일) ...
 
       # 4. SSH로 B/G 배포 스크립트 실행
       - name: Run Blue/Green Deploy Script on Server
