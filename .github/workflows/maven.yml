@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
 
-    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow.yml@main
+    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow.yml@feat/cicd
     with:
 
       service-name: front_server
