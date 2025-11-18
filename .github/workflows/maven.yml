@@ -1,90 +1,25 @@
-name: Front CI/CD (Blue/Green Docker)
+name: Deploy Front Server (Blue/Green)
 
 on:
   push:
-    branches: [ "main", "dev", "feature/**" ]
+    branches: [ "main", "dev" ,"feature/**" ]
   pull_request:
-    branches: [ "main", "dev", "feature/**" ]
+    branches: [ "main", "dev" ]
 
 jobs:
-  build-push-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
+  deploy:
 
-      # 1. 코드 체크아웃
-      - uses: actions/checkout@v4
+    uses: nhnacademy-be12-high-five/config/.github/workflows/shared-workflow.yml@main
+    with:
 
-      # 2. JDK 21 설정
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      # 3. Maven으로 .jar 빌드
-      - name: Build with Maven
-        run: mvn clean package
-
-      # ⬇️ 여기 로그인 코드가 있습니다 ⬇️
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # ⬇️ 여기 Docker 빌드/푸시 코드가 있습니다 ⬇️
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: fbxogns123/front-server:latest
-
-      # 4. SSH로 B/G 배포 스크립트 실행,
-      - name: Run Blue/Green Deploy Script on Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_IP }}
-          username: ${{ secrets.SSH_ID }}
-          password: ${{ secrets.SSH_PW }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            DEPLOY_PATH="~/www/nhnbook"
-            SERVICE_NAME="front_server"
-            NGINX_CONF_PATH="/home/backend/be12-team5/nginx"
-            
-            # --- 🔵 프론트 포트 정의 (요청대로 수정) ---
-            BLUE_PORT="10483"
-            GREEN_PORT="10484"
-            
-            cd $DEPLOY_PATH
-
-            # --- 1. 현재 활성 'Front' 포트 확인 ---
-            CURRENT_FRONT_PORT=$(grep -o '[0-9]\{5\}' $NGINX_CONF_PATH/conf.d/front_upstream.conf)
-
-            # --- 2. 배포할 대상(Idle) 환경 결정 ---
-            if [ "$CURRENT_FRONT_PORT" == "$BLUE_PORT" ]; then
-              echo "Current Front is BLUE ($BLUE_PORT). Deploying to GREEN ($GREEN_PORT)..."
-              TARGET_COMPOSE_FILE="docker-compose-green.yml"
-              TARGET_FRONT_PORT=$GREEN_PORT
-            else
-              echo "Current Front is GREEN ($GREEN_PORT). Deploying to BLUE ($BLUE_PORT)..."
-              TARGET_COMPOSE_FILE="docker-compose-blue.yml"
-              TARGET_FRONT_PORT=$BLUE_PORT
-            fi
-
-            # --- 3. 비활성(Idle) 환경에 새 'front_server' 배포 ---
-            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE pull $SERVICE_NAME
-            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE up -d --no-deps $SERVICE_NAME
-
-            # --- 4. 헬스체크 (간단히 sleep) ---
-            echo "Waiting for 30 seconds for service to start..."
-            sleep 30 
-            
-            # --- 5. Nginx 'Front' 트래픽 전환 ---
-            echo "Switching Nginx traffic to $TARGET_FRONT_PORT..."
-            echo "server 127.0.0.1:$TARGET_FRONT_PORT;" > $NGINX_CONF_PATH/conf.d/front_upstream.conf
-            
-            echo "Deployment successful! Front traffic now routed to $TARGET_FRONT_PORT."
-            docker image prune -f
+      service-name: front_server
+      
+      # 서버 배포 경로
+      deploy-path: /home/backend/be12-team5/www/nhnbook
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      SSH_IP: ${{ secrets.SSH_IP }}
+      SSH_ID: ${{ secrets.SSH_ID }}
+      SSH_PW: ${{ secrets.SSH_PW }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
