@@ -16,7 +16,11 @@ jobs:
 
       # 2. JDK 21 설정
       - name: Set up JDK 21
-        uses: ...
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
 
       # 3. Maven으로 .jar 빌드
       - name: Build with Maven
