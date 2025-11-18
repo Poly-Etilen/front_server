@@ -14,7 +14,6 @@ jobs:
 
       service-name: front_server
       
-      # 서버 배포 경로
       deploy-path: /home/backend/be12-team5/www/nhnbook
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
