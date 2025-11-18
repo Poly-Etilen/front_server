@@ -2,7 +2,7 @@ name: Deploy Front Server (Blue/Green)
 
 on:
   push:
-    branches: [ "main", "dev" ,"feature/**" ]
+    branches: [ "feature/**" , "feat/**"]
   pull_request:
     branches: [ "main", "dev" ]
 
@@ -23,3 +23,4 @@ jobs:
       SSH_ID: ${{ secrets.SSH_ID }}
       SSH_PW: ${{ secrets.SSH_PW }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
+
