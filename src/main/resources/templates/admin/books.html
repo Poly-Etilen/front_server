@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Highfive 관리자 - 회원 관리</title>
+    <title>Highfive 관리자 - 도서 관리</title>
     <style>
         :root {
             --color-primary: #007bff;
@@ -104,6 +104,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
         }
 
         .form-row label {
@@ -113,11 +114,10 @@
         }
 
         .form-row input {
-            flex: 1;
+            flex: 2;
             padding: 10px 14px;
             border: 1px solid var(--color-border);
             border-radius: 6px;
-            text-align: right;
         }
 
         .save-btn {
@@ -152,7 +152,7 @@
 <aside class="sidebar">
     <h2>HIGHFIVE 관리자</h2>
     <ul class="menu">
-        <li><a href="members.html" data-key="members">회원 관리</a></li>
+        <li><a href="books.html" data-key="books" class="active">도서 관리</a></li>
         <li><a href="points.html" data-key="points">포인트 정책 관리</a></li>
         <li><a href="coupons.html" data-key="coupons">쿠폰 관리</a></li>
     </ul>
@@ -160,28 +160,27 @@
 
 <!-- 메인 콘텐츠 -->
 <div style="flex:1; display:flex; flex-direction:column;">
-    <header>회원 관리</header>
+    <header>도서 관리</header>
     <main>
         <div class="card">
-            <h3>회원 관리</h3>
+            <h3>도서 등록 관리</h3>
+
             <div class="form-row">
-                <label>회원가입 적립 P</label>
-                <input type="number" value="5000">
-            </div>
-            <div class="form-row">
-                <label>텍스트 리뷰 적립 P</label>
-                <input type="number" value="200">
-            </div>
-            <div class="form-row">
-                <label>사진 리뷰 적립 P</label>
-                <input type="number" value="500">
-            </div>
-            <div class="form-row">
-                <label>도서 구매 기본 적립률 (%)</label>
-                <input type="number" step="0.1" value="0.5">
+                <label for="bookId">도서 고유번호 (ISBN)</label>
+                <input id="bookId" name="bookId" type="text" placeholder="예: 100001" />
             </div>
 
-            <button class="save-btn">정책 저장하기</button>
+            <div class="form-row">
+                <label for="title">도서 제목</label>
+                <input id="title" name="title" type="text" placeholder="예: 하이파이브 개발자 되기" />
+            </div>
+
+            <div class="form-row">
+                <label for="author">저자</label>
+                <input id="author" name="author" type="text" placeholder="예: 홍길동" />
+            </div>
+
+            <button class="save-btn">도서 등록하기</button>
             <div class="updated-info">최근 수정: 2025-11-10 (관리자 ID: 1)</div>
         </div>
     </main>
