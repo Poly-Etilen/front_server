@@ -138,6 +138,24 @@
             color: #fff;
         }
 
+        .user-menu .user-link {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .user-menu .user-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            transition: opacity 0.2s ease;
+        }
+
+        .user-menu .user-link:hover .user-icon {
+            opacity: 0.7;
+        }
+
+
         /* 메인 */
         main {
             flex: 1;
@@ -525,10 +543,22 @@
         </nav>
 
         <div class="user-menu">
-            <a class="user-link" href="./order/mypage.html">마이페이지</a>
-            <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-            <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+            <!-- 쿠폰 -->
+            <a class="user-link" href="/coupon">
+                <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+            </a>
+
+            <!-- 마이페이지 -->
+            <a class="user-link" href="/mypage">
+                <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+            </a>
+
+            <!-- 장바구니 -->
+            <a class="user-link" href="/cart">
+                <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+            </a>
         </div>
+
     </div>
 </header>
 
@@ -872,10 +902,7 @@
         <!-- 슬림 배너/퀵링크 -->
         <section class="strip" aria-label="빠른 링크">
             <div class="strip-inner">
-                <a class="chip" href="#">오늘의 특가</a>
-                <a class="chip" href="#">사은품 안내</a>
-                <a class="chip" href="#">eBook 쿠폰</a>
-                <a class="chip" href="#">MD의 선택</a>
+                <a class="chip" href="#">쿠폰발급함</a>
             </div>
         </section>
     </div>

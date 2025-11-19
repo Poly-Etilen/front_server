@@ -176,6 +176,23 @@
         background-color: var(--color-accent);
         color: white;
       }
+      .user-menu .user-link {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+      }
+
+      .user-menu .user-icon {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          transition: opacity 0.2s ease;
+      }
+
+      .user-menu .user-link:hover .user-icon {
+          opacity: 0.7;
+      }
+
 
       .container2 {
         max-width: 900px;
@@ -361,10 +378,22 @@
           </nav>
 
           <div class="user-menu">
-              <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-              <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-              <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+              <!-- 쿠폰 -->
+              <a class="user-link" href="/coupon">
+                  <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+              </a>
+
+              <!-- 마이페이지 -->
+              <a class="user-link" href="/mypage">
+                  <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+              </a>
+
+              <!-- 장바구니 -->
+              <a class="user-link" href="/cart">
+                  <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+              </a>
           </div>
+
       </div>
   </header>
     <main id="container">
