@@ -1,25 +1,74 @@
-name: Deploy Front Server (Blue/Green)
+name: FrontEnd Service CI/CD
 
 on:
   push:
-    branches: [ "feature/**" , "feat/**"]
+    branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev" ]
 
 jobs:
-  deploy:
+  build-deploy:
+    runs-on: ubuntu-latest
 
-    uses: nhnacademy-be12-high-five/.github/.github/workflows/shared-workflow.yml@feat/cicd
-    with:
+    steps:
+      # 1. 코드 체크아웃
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
 
-      service-name: front_server
-      
-      deploy-path: /home/backend/be12-team5/www/nhnbook
-    secrets:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      SSH_IP: ${{ secrets.SSH_IP }}
-      SSH_ID: ${{ secrets.SSH_ID }}
-      SSH_PW: ${{ secrets.SSH_PW }}
-      SSH_PORT: ${{ secrets.SSH_PORT }}
+      # 2. JDK 설정 (Maven 빌드용)
+      - name: JDK 21 설정
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
+      # 3. Maven 빌드 (소나큐브 제외!)
+      - name: Maven 빌드
+        run: mvn clean package -B -DskipTests
+
+      # 4. Docker Hub 로그인
+      - name: Docker Hub 로그인
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 5. Docker 이미지 빌드 및 푸시
+      - name: Docker 이미지 빌드 및 푸시
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          # 프론트엔드 이미지 이름에 맞게 수정하세요
+          tags: ${{ secrets.DOCKER_USERNAME }}/front-server:latest
+
+      # 6. 서버 접속 및 배포 (재생성 방식 적용)
+      - name: 서버 배포 (SSH)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_ID }}
+          password: ${{ secrets.SSH_PW }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "🚀 Front Server 배포 시작..."
+            cd ~/www/nhnbook
+            
+            # 프론트 서버는 고정 포트(10483)를 쓰므로 기존 컨테이너를 꺼야 합니다.
+            CONTAINER_NAME="team5-front-server"
+            SERVICE_NAME="front_server"
+
+            echo "🛑 기존 컨테이너 중지 및 제거..."
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
+            
+            echo "📥 최신 이미지 Pull..."
+            docker-compose pull $SERVICE_NAME
+            
+            echo "🔄 컨테이너 시작..."
+            docker-compose up -d $SERVICE_NAME
+            
+            docker image prune -f
+            echo "✅ 배포 완료!"
