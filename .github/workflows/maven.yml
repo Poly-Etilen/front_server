@@ -41,7 +41,7 @@ jobs:
           push: true
           tags: fbxogns123/front-server:latest
 
-      # 4. SSH로 B/G 배포 스크립트 실행
+      # 4. SSH로 B/G 배포 스크립트 실행,
       - name: Run Blue/Green Deploy Script on Server
         uses: appleboy/ssh-action@master
         with:
@@ -85,9 +85,6 @@ jobs:
             # --- 5. Nginx 'Front' 트래픽 전환 ---
             echo "Switching Nginx traffic to $TARGET_FRONT_PORT..."
             echo "server 127.0.0.1:$TARGET_FRONT_PORT;" > $NGINX_CONF_PATH/conf.d/front_upstream.conf
-
-            # --- 6. Nginx 설정 리로드 (중단 없음) ---
-            sudo nginx -s reload
             
             echo "Deployment successful! Front traffic now routed to $TARGET_FRONT_PORT."
             docker image prune -f
