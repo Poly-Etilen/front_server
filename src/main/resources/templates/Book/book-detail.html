@@ -396,6 +396,56 @@
         margin-left: 10px;
       }
 
+      /* ========= 포장 옵션(색상 선택 스타일) ========= */
+      .option-block {
+          margin-bottom: 20px;
+          padding: 12px 0;
+          border-top: 1px solid var(--color-border-light);
+          border-bottom: 1px solid var(--color-border-light);
+          max-width: 420px;
+      }
+
+      .option-block-title {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--color-text-dark);
+      }
+
+      .option-items {
+          display: flex;
+          gap: 10px;
+          margin-top: 10px;
+      }
+
+      .option-item {
+          flex: 0 0 auto;
+          min-width: 110px;
+          padding: 10px 12px;
+          border-radius: 8px;
+          border: 1px solid var(--color-border);
+          background: #fff;
+          font-size: 14px;
+          color: var(--color-text-dark);
+          text-align: center;
+          transition: all 0.15s ease;
+      }
+
+      .option-item small {
+          display: block;
+          margin-top: 3px;
+          font-size: 12px;
+          color: var(--color-text-light);
+      }
+
+      /* 선택된 상태 */
+      .option-item.active {
+          border-color: #111;
+          color: #111;
+          font-weight: 700;
+          box-shadow: 0 0 0 1px #111 inset;
+      }
+
+
       /* 구매 버튼 영역 */
       .purchase-actions {
         display: flex;
@@ -713,6 +763,26 @@
               [적립] 포인트 405P (구매 금액의 1%)
             </p>
           </div>
+            <div class="option-block">
+                <div class="option-block-title">포장 선택</div>
+                <div class="option-items" id="wrap-options">
+                    <button type="button"
+                            class="option-item active"
+                            data-value="N">
+                        포장 안 함
+                        <small>기본 옵션</small>
+                    </button>
+                    <button type="button"
+                            class="option-item"
+                            data-value="Y">
+                        포장
+                        <small>+1,000원</small>
+                    </button>
+                </div>
+                <input type="hidden" name="wrapYn" id="wrapYn" value="N">
+            </div>
+
+
 
           <div class="purchase-actions">
             <button class="btn-secondary">❤️</button>
@@ -901,6 +971,21 @@
           window.location.href = "../member/login.html";
         });
       }
+
+      // ⭐️ 포장 옵션 선택 (예 / 아니요)
+      const wrapButtons = document.querySelectorAll("#wrap-options .option-item");
+      const wrapInput = document.getElementById("wrapYn");
+
+      wrapButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+              wrapButtons.forEach((b) => b.classList.remove("active"));
+              btn.classList.add("active");
+              if (wrapInput) {
+                  wrapInput.value = btn.dataset.value; // N / Y
+              }
+          });
+      });
+
     </script>
   </body>
 </html>

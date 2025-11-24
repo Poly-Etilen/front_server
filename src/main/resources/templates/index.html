@@ -233,17 +233,52 @@
             padding: 10px;
             border-bottom: 1px solid var(--color-border-light);
         }
+        .tab-item {
+            position: relative;
+        }
+
         .tab-btn {
             padding: 8px 12px;
             border-radius: 20px;
             background: #f2f6ff;
             color: #0b5ed7;
             font-weight: 700;
+            border: none;
         }
         .tab-btn[aria-selected="true"] {
             background: #0b5ed7;
             color: #fff;
         }
+        .sub-menu {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            min-width: 180px;
+            background: #fff;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: none;
+            z-index: 10;
+        }
+        .tab-item:hover .sub-menu {
+            display: block;
+        }
+        .sub-menu a {
+            display: block;
+            padding: 6px 8px;
+            font-size: 14px;
+            color: #333;
+            border-radius: 6px;
+        }
+
+        .sub-menu a:hover {
+            background: #f2f6ff;
+            color: #0b5ed7;
+        }
+
+
         .tab-panels {
             padding: 14px;
         }
@@ -482,10 +517,9 @@
 <header id="header" role="banner">
     <div class="container">
         <a href="./main.html" class="logo">
-<!--            <img src="./img/logo.png" alt="HIGH-FIVE 로고"/>-->
+            <img src="../img/logo.png" alt="HIGH-FIVE 로고"/>
             <div class="brand">HIGH-FIVE BOOKS</div>
         </a>
-
 
         <nav class="gnb" aria-label="주요 메뉴">
             <div class="search-box" role="search">
@@ -550,131 +584,129 @@
         <!-- 카테고리 탭 -->
         <section class="tabs" aria-label="카테고리">
             <div class="tab-bar" role="tablist">
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="true"
-                        data-tab="domestic"
-                >
-                    국내도서
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="foreign"
-                >
-                    외국도서
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="ebook"
-                >
-                    eBook
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="kids"
-                >
-                    유아·아동
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="it"
-                >
-                    IT·개발
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="economy"
-                >
-                    경제·경영
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="human"
-                >
-                    인문
-                </button>
-                <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        data-tab="self"
-                >
-                    자기계발
-                </button>
-            </div>
-            <div class="tab-panels">
-                <div id="panel-domestic" class="cat-grid" role="tabpanel">
-                    <a class="cat" href="#"
-                    ><div class="thumb">소설</div>
-                        <span>소설</span></a
+                <!-- 국내도서 -->
+                <div class="tab-item" data-tab="domestic">
+                    <button
+                            class="tab-btn"
+                            role="tab"
+                            aria-selected="true"
                     >
-                    <a class="cat" href="#"
-                    ><div class="thumb">시/에세이</div>
-                        <span>시/에세이</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">인문</div>
-                        <span>인문</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">사회/정치</div>
-                        <span>사회/정치</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">경제/경영</div>
-                        <span>경제/경영</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">자기계발</div>
-                        <span>자기계발</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">과학</div>
-                        <span>과학</span></a
-                    >
-                    <a class="cat" href="#"
-                    ><div class="thumb">여행</div>
-                        <span>여행</span></a
-                    >
+                        국내도서
+                    </button>
                 </div>
-                <div
-                        id="panel-foreign"
-                        class="cat-grid"
-                        role="tabpanel"
-                        hidden
-                ></div>
-                <div id="panel-ebook" class="cat-grid" role="tabpanel" hidden></div>
-                <div id="panel-kids" class="cat-grid" role="tabpanel" hidden></div>
+
+                <!-- 외국도서 -->
+                <div class="tab-item" data-tab="foreign">
+                    <button
+                            class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                    >
+                        외국도서
+                    </button>
+                </div>
+
+                <!-- IT  -->
+                <div class="tab-item" data-tab="it">
+                    <button
+                            class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                    >
+                        IT
+                    </button>
+                    <div class="sub-menu">
+                        <a href="#">컴퓨터공학</a>
+                        <a href="#">전자공학</a>
+                        <a href="#">프로그래밍</a>
+                        <a href="#">데이터·인공지능</a>
+                    </div>
+                </div>
+
+                <!-- 경제  -->
+                <div class="tab-item" data-tab="economy">
+                    <button
+                            class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                    >
+                        경제
+                    </button>
+                    <div class="sub-menu">
+                        <a href="#">재무·회계</a>
+                        <a href="#">주식·투자</a>
+                    </div>
+                </div>
+
+                <!-- 자기개발 -->
+                <div class="tab-item" data-tab="self">
+                    <button
+                            class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                    >
+                        자기개발
+                    </button>
+                    <div class="sub-menu">
+                        <a href="#">여행</a>
+                        <a href="#">건강</a>
+                        <a href="#">요리</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 아래 패널 영역은 필요에 맞게 사용 (국내도서만 예시로 채움) -->
+            <div class="tab-panels">
+                <!-- 국내도서 탭 내용 -->
+                <div id="panel-domestic" class="cat-grid" role="tabpanel">
+                    <a class="cat" href="#">
+                        <div class="thumb">소설</div>
+                        <span>소설</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">시/에세이</div>
+                        <span>시/에세이</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">인문</div>
+                        <span>인문</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">사회/정치</div>
+                        <span>사회/정치</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">경제/경영</div>
+                        <span>경제/경영</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">자기계발</div>
+                        <span>자기계발</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">과학</div>
+                        <span>과학</span>
+                    </a>
+                    <a class="cat" href="#">
+                        <div class="thumb">여행</div>
+                        <span>여행</span>
+                    </a>
+                </div>
+
+                <!-- 다른 탭 패널은 비워두고 나중에 필요 시 채우기 -->
+                <div id="panel-foreign" class="cat-grid" role="tabpanel" hidden></div>
                 <div id="panel-it" class="cat-grid" role="tabpanel" hidden></div>
-                <div
-                        id="panel-economy"
-                        class="cat-grid"
-                        role="tabpanel"
-                        hidden
-                ></div>
-                <div id="panel-human" class="cat-grid" role="tabpanel" hidden></div>
+                <div id="panel-economy" class="cat-grid" role="tabpanel" hidden></div>
                 <div id="panel-self" class="cat-grid" role="tabpanel" hidden></div>
             </div>
         </section>
+
 
         <!-- 베스트셀러 -->
         <section class="section" aria-labelledby="best-title">
             <div class="head">
                 <h3 id="best-title">베스트셀러</h3>
-                <a class="more" href="#">더보기</a>
+                <a class="more" href="#"></a>
             </div>
             <div class="card-grid" id="best-grid">
                 <!-- 샘플 카드 5개 -->

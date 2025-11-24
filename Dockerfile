@@ -1,11 +1,12 @@
-# 1. JRE 21이 포함된 베이스 이미지 사용 (실행 전용)
 FROM eclipse-temurin:21-jre-alpine
 
-# 2. 작업 디렉토리 설정
-WORKDIR /app
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone
 
-# 3. CI 스텝에서 빌드된 .jar 파일을 컨테이너로 복사
+ENV TZ=Asia/Seoul
+
+WORKDIR /app
 COPY target/*.jar app.jar
 
-# 4. 컨테이너가 시작될 때 이 명령어를 실행
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
