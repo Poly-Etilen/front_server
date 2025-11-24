@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://js.tosspayments.com/v1"></script>
     <title>HIGH-FIVE 도서 | 결제하기</title>
     <style>
       :root {
@@ -299,7 +300,6 @@
                 <div class="brand">HIGH-FIVE BOOKS</div>
             </a>
 
-
             <nav class="gnb" aria-label="주요 메뉴">
                 <div class="search-box" role="search">
                     <input
@@ -342,10 +342,13 @@
             <div class="hd">결제 수단</div>
             <div class="bd">
               <div class="tabs" id="payTabs">
-                <button class="tab active" data-key="card">신용카드</button>
                 <button class="tab" data-key="account">계좌이체</button>
-                <button class="tab" data-key="tosspay">TossPay</button>
-                <button class="tab" data-key="payco">PAYCO</button>
+                <button th:each="method : ${paymentMethods}"
+                        class="tab"
+                        th:classappend="${currentKey == method.key} ? 'active' : ''"
+                        th:data-key="${method.key}">
+                  <span th:text="${method.label}">토스결제</span>
+                </button>
               </div>
 
               <div class="pay-content" id="payContent">
@@ -357,7 +360,8 @@
                 <strong class="value" id="finalAmount">38,700원</strong>
               </div>
 
-              <button class="pay-btn" id="payBtn">결제하기</button>
+              <button class="button" style="margin-top: 30px" onclick="requestPayment()">결제하기</button>
+
             </div>
           </section>
 
@@ -422,9 +426,6 @@
       const tabEls = document.querySelectorAll(".tab");
       const contentEl = document.getElementById("payContent");
       const copy = {
-        card: "신용카드로 결제합니다. (예: 카드사/할부 선택 UI는 추후 연동)",
-        account:
-          "계좌이체로 결제합니다. (예: 은행 선택, 예금주 인증은 추후 연동)",
         tosspay: "토스페이 결제 화면으로 이동합니다. (SDK 연동 예정)",
         payco: "PAYCO로 결제합니다. (SDK 연동 예정)",
       };
@@ -437,17 +438,64 @@
         });
       });
 
+      // // --- Toss Payments 연동 로직 --- -> 수정하기
+      const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq";
+      const customerKey = "dbxQTZycUkwyTeddoWAfE";
+      const tossPayments = TossPayments(clientKey);
+      // 회원 결제
+      // @docs https://docs.tosspayments.com/sdk/v2/js#tosspaymentspayment
+      const payment = tossPayments.payment({ customerKey });
+      // 비회원 결제
+      // const payment = tossPayments.payment({customerKey: TossPayments.ANONYMOUS})
+      //
+      // function getPaymentAmount() {
+      //   const amountText = document.getElementById("finalAmount").textContent;
+      //   // '38,700원' -> 38700
+      //   return parseInt(amountText.replace(/[^0-9]/g, ''), 10);
+      // }
+
+      // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+      // @docs https://docs.tosspayments.com/sdk/v2/js#paymentrequestpayment
+      async function requestPayment() {
+        // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+        // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+
+        const finalAmount = getPaymentAmount();
+        const activeTabKey = document.querySelector(".tab.active").dataset.key;
+
+        await payment.requestPayment({
+          method: "CARD", // 카드 결제
+          amount: {
+            currency: "KRW",
+            value: 50000,
+          },
+          orderId: "0z8sfuqSPNcpoai31o_U7", // 고유 주문번호
+          orderName: "토스 티셔츠 외 2건",
+          successUrl: window.location.origin + "/success", // 결제 요청이 성공하면 리다이렉트되는 URL
+          failUrl: window.location.origin + "/fail", // 결제 요청이 실패하면 리다이렉트되는 URL
+          customerEmail: "customer123@gmail.com",
+          customerName: "김토스",
+          customerMobilePhone: "01012341234",
+          card: {
+            useEscrow: false,
+            flowMode: "DEFAULT", // 통합결제창 여는 옵션
+            useCardPoint: false,
+            useAppCardOnly: false,
+          },
+        });
+      }
+
       // 결제 버튼(더미)
-      document.getElementById("payBtn").addEventListener("click", () => {
-        const active = document
-          .querySelector(".tab.active")
-          ?.textContent.trim();
-        const amount = document.getElementById("finalAmount").textContent;
-        alert(
-          `[데모] ${active}로 ${amount} 결제를 진행합니다.\n(실결제는 PG 연동 필요)`
-        );
-        // 실제 연동 시: 결제요청 API 호출 → PG SDK/결제창 호출 → 결과 처리
-      });
+      // document.getElementById("payBtn").addEventListener("click", () => {
+      //   const active = document
+      //     .querySelector(".tab.active")
+      //     ?.textContent.trim();
+      //   const amount = document.getElementById("finalAmount").textContent;
+      //   alert(
+      //     `[데모] ${active}로 ${amount} 결제를 진행합니다.\n(실결제는 PG 연동 필요)`
+      //   );
+      //   // 실제 연동 시: 결제요청 API 호출 → PG SDK/결제창 호출 → 결과 처리
+      // });
     </script>
   </body>
 </html>
