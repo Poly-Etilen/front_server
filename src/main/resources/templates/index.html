@@ -987,7 +987,7 @@
 
     // 탭 클릭 이벤트 수정
     tabBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", () => {+
             // 탭 선택 표시 로직 (기존)
             tabBtns.forEach((b) => b.setAttribute("aria-selected", "false"));
             btn.setAttribute("aria-selected", "true");

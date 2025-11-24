@@ -356,7 +356,13 @@
                           placeholder="도서명, 저자, ISBN, 태그 검색"
                           aria-label="통합 검색"
                   />
-                  <button class="search-btn" aria-label="검색">검색</button>
+                  <form method="get" action="/search">
+                      <button class="search-btn"
+                              aria-label="검색"
+                              type="submit">
+                          검색
+                      </button>
+                  </form>
               </div>
           </nav>
 

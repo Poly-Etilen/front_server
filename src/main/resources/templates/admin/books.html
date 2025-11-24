@@ -180,7 +180,11 @@
                 <input id="author" name="author" type="text" placeholder="예: 홍길동" />
             </div>
 
-            <button class="save-btn">도서 등록하기</button>
+<!--            // action : 도서 등록하는 API 수정하기 -->
+            <form method="post" action="http://localhost:8080/">
+                <input type="submit" value="도서 등록" class="save-btn">
+            </form>
+
             <div class="updated-info">최근 수정: 2025-11-10 (관리자 ID: 1)</div>
         </div>
     </main>

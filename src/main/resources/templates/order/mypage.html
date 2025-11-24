@@ -569,7 +569,13 @@
                         placeholder="검색어를 입력하세요"
                         aria-label="통합 검색"
                 />
-                <button class="search-btn" aria-label="검색">검색</button>
+                <form method="get" action="/search">
+                    <button class="search-btn"
+                            aria-label="검색"
+                            type="submit">
+                        검색
+                    </button>
+                </form>
             </div>
         </nav>
 
@@ -583,13 +589,55 @@
 
 <div class="container2">
     <nav class="box">
-        <button class="active" data-tab="info">내 정보</button>
-        <button data-tab="coupons">쿠폰</button>
-        <button data-tab="points">포인트</button>
-        <button data-tab="reading">독후감</button>
-        <button data-tab="orders">주문내역</button>
-        <button data-tab="reviews">리뷰</button>
-        <button data-tab="likes">찜 목록</button>
+
+<!--        // category controller에 추가하기-->
+
+<!--        @GetMapping("/mypage/{tab}")-->
+<!--        public String myPage(@PathVariable("tab") String activeTab, Model model) {-->
+<!--        // 1. URL 경로 변수로 현재 탭의 값을 받습니다. (예: /mypage/info)-->
+
+<!--        // 2. 모델에 현재 활성화된 탭의 값을 담아 HTML로 전달합니다.-->
+<!--        model.addAttribute("currentTab", activeTab);-->
+
+<!--        // 3. (선택) 해당 탭에 필요한 데이터를 모델에 추가로 담아 보냅니다.-->
+<!--        // if ("info".equals(activeTab)) {-->
+<!--        //     model.addAttribute("userInfo", userService.getUserInfo());-->
+<!--        // }-->
+
+<!--        return "mypage/myPageTemplate"; // Thymeleaf 템플릿 이름-->
+<!--        }-->
+<!--        -->
+
+<!--        // 타임리프 추가 -->
+        <button th:classappend="${currentTab == 'info'} ? 'active' : ''"
+                data-tab="info">
+            내 정보
+        </button>
+
+        <button th:classappend="${currentTab == 'coupons'} ? 'active' : ''"
+                data-tab="coupons">
+            쿠폰
+        </button>
+
+        <button th:classappend="${currentTab == 'points'} ? 'active' : ''"
+                data-tab="points">
+            포인트
+        </button>
+
+        <button th:classappend="${currentTab == 'orders'} ? 'active' : ''"
+                data-tab="orders">
+            주문내역
+        </button>
+
+        <button th:classappend="${currentTab == 'reviews'} ? 'active' : ''"
+                data-tab="reviews">
+            리뷰
+        </button>
+
+        <button th:classappend="${currentTab == 'likes'} ? 'active' : ''"
+                data-tab="likes">
+            찜 목록
+        </button>
     </nav>
 
     <section id="tab-info" class="tab-content active">
@@ -623,7 +671,9 @@
 
         <br />
 
-        <button type="button" class="btn-edit">수정</button>
+        <form method="post" action="">
+            <button type="button" class="btn-edit">수정</button>
+        </form>
     </section>
 
     <section id="tab-coupons" class="tab-content">
@@ -700,7 +750,10 @@
                 </div>
                 <div class="coupon-condition">모든 도서에 적용 가능</div>
                 <div class="coupon-actions">
-                    <button class="btn btn-secondary">삭제</button>
+<!--                    // action API로 수정 -->
+                   <form method="delete" action="./">
+                       <button class="btn btn-secondary">삭제</button>
+                   </form>
                 </div>
             </div>
         </div>
@@ -735,105 +788,8 @@
             </div>
             <div class="history-item">
                 <span class="history-desc">리뷰 작성 보너스 (2025.10.16)</span>
-                <span class="history-amount" style="color: var(--color-primary)"
-                >+ 500 P</span
-                >
+                <span class="history-amount" style="color: var(--color-primary)">+ 500 P</span>
             </div>
-        </div>
-    </section>
-
-    <!-- 독후감 탭 -->
-    <section id="tab-reading" class="tab-content">
-        <!-- 상단 안내 박스 -->
-        <div class="mp-card mp-guide">
-            <h2>독후감 작성 안내</h2>
-            <p>
-                · 독후감 1편 작성 시 <strong>500P</strong> 적립됩니다. (월 최대 3편까지)<br />
-                · 본문 <strong>500자 이상</strong> 작성 시에만 포인트가 지급됩니다.<br />
-                · 욕설, 비방, 광고, 무의미한 글은 관리자에 의해 삭제 및 포인트 회수될 수 있습니다.
-            </p>
-        </div>
-
-        <!-- 작성 가능한 도서 목록 -->
-        <div class="mp-card">
-            <div class="mp-card-head">
-                <h3>독후감 작성 가능 도서</h3>
-                <span class="sub">최근 3개월 내 구매 도서 기준</span>
-            </div>
-            <table class="reading-table">
-                <thead>
-                <tr>
-                    <th>도서 정보</th>
-                    <th>구매일</th>
-                    <th>상태</th>
-                    <th>작성</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="reading-book-cell">
-                            <img src="../img/book1.jpeg" alt="표지" class="reading-thumb" />
-                            <div>
-                                <div class="title">프론트엔드 개발자를 위한 자바스크립트 바이블</div>
-                                <div class="meta">홍길동 · HIGH-FIVE 출판사</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>2025-11-10</td>
-                    <td><span class="badge badge-yellow">미작성</span></td>
-                    <td>
-                        <button
-                                type="button"
-                                class="btn-outline"
-                                onclick="location.href='/book/reading-note.html'"
-                        >
-                            독후감 작성
-                        </button>
-                    </td>
-                </tr>
-                <!-- 필요 시 반복 -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 내가 쓴 독후감 목록 -->
-        <div class="mp-card">
-            <div class="mp-card-head">
-                <h3>내가 쓴 독후감</h3>
-                <span class="sub">포인트 적립 내역과 함께 확인할 수 있습니다.</span>
-            </div>
-            <table class="reading-table">
-                <thead>
-                <tr>
-                    <th>도서 정보</th>
-                    <th>작성일</th>
-                    <th>별점</th>
-                    <th>포인트</th>
-                    <th>관리</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="reading-book-cell">
-                            <img src="../img/book1.jpeg" alt="표지" class="reading-thumb" />
-                            <div>
-                                <div class="title">프론트엔드 개발자를 위한 자바스크립트 바이블</div>
-                                <div class="meta">홍길동 · HIGH-FIVE 출판사</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>2025-11-18</td>
-                    <td>⭐⭐⭐⭐⭐</td>
-                    <td><strong>+500P</strong></td>
-                    <td>
-                        <button type="button" class="btn-outline">보기</button>
-                        <button type="button" class="btn-outline">수정</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </section>
 
@@ -880,5 +836,6 @@
         });
     });
 </script>
+
 </body>
 </html>

@@ -375,12 +375,12 @@
       .sns-btn {
         width: 100%;
         padding: 12px;
-        border: 1px solid var(--color-border);
         border-radius: 4px;
         font-size: 15px;
         font-weight: 500;
-        background-color: #fee500; /* 카카오 예시 */
+        background-color: #007bff;
         color: #191919;
+        margin: 10px;
       }
 
       .sns-btn.payco {
@@ -514,7 +514,6 @@
               <div class="brand">HIGH-FIVE BOOKS</div>
           </a>
 
-
           <nav class="gnb" aria-label="주요 메뉴">
               <div class="search-box" role="search">
                   <input
@@ -567,13 +566,16 @@
               </div>
           </div>
 
-          <button type="submit" class="login-btn">로그인</button>
-          <button type="submit" class="login2-btn">회원가입</button>
+<!--          form 태그 아님 -->
+<!--          <button type="submit" class="login-btn">로그인</button>-->
+<!--          <button type="submit" class="login2-btn">회원가입</button>-->
+
         </form>
 
         <div class="sns-login">
           <div class="divider">SNS 계정으로 로그인</div>
-          <button type="button" class="sns-btn payco">PAYCO 로그인</button>
+            <button type="button" class="sns-btn">로그인</button> <br>
+            <button type="button" class="sns-btn payco">PAYCO 로그인</button>
         </div>
       </div>
     </main>
@@ -637,7 +639,6 @@
         window.location.href = "../order/mypage.html";
       });
     }
-
 
     // ==== 비밀번호 보이기/숨기기 함수 ====
     function togglePasswordVisibility() {
