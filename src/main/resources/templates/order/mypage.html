@@ -495,6 +495,32 @@
         background-color: #f9f9f9;
       }
 
+      .coupon-register-link-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 25px;
+        /*border: 1px solid var(--color-primary);*/
+        border-radius: 8px;
+        background-color: #f7fbff; /* 연한 파란색 배경 */
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-text-dark);
+      }
+
+      .coupon-register-link-box .btn-goto-register {
+        background-color: var(--color-primary);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none; /* a 태그이므로 필요 */
+      }
+      .coupon-register-link-box .btn-goto-register:hover {
+        background-color: #0056b3;
+      }
+
     </style>
   </head>
   <body>
@@ -570,6 +596,10 @@
 
       <section id="tab-coupons" class="tab-content">
         <h2 class="section-title">보유 쿠폰함 (4개)</h2>
+
+
+        <br>
+
         <div class="coupon-grid">
           <div class="coupon-card">
             <div class="coupon-header">
@@ -587,9 +617,9 @@
               </div>
             </div>
             <div class="coupon-condition">5만원 이상 구매 시 적용 가능</div>
-            <!-- <div class="coupon-actions">
+            <div class="coupon-actions">
               <button class="btn btn-primary">쿠폰 사용하기</button>
-            </div> -->
+            </div>
           </div>
           <div class="coupon-card">
             <div class="coupon-header">
@@ -607,9 +637,9 @@
               </div>
             </div>
             <div class="coupon-condition">최대 5,000원 할인 적용</div>
-            <!-- <div class="coupon-actions">
+            <div class="coupon-actions">
               <button class="btn btn-primary">쿠폰 사용하기</button>
-            </div> -->
+            </div>
           </div>
           <div class="coupon-card">
             <div class="coupon-header">

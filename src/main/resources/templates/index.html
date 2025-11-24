@@ -164,6 +164,7 @@
             gap: 10px;
             align-items: center;
             padding: 26px;
+            justify-items: center;
         }
         .slide .copy h2 {
             font-size: 28px;
@@ -404,6 +405,13 @@
             color: #c0c0c0;
         }
 
+        .copy {
+            display: flex;
+            flex-direction: column; /* 자식 요소들을 세로로 쌓음 */
+            align-items: center;    /* 수평(가로) 방향으로 중앙 정렬 */
+            justify-content: center;
+        }
+
         /* 반응형 */
         @media (max-width: 992px) {
             .slide {
@@ -445,7 +453,7 @@
 
         /* 기본 텍스트 링크(마이페이지/장바구니) */
         .user-menu .user-link {
-            display: inline-block;z
+            display: inline-block;
             font-weight: 700;
             color: #333;
             text-decoration: none;
@@ -506,48 +514,29 @@
                 <!-- slide 1 -->
                 <article class="slide" aria-roledescription="slide">
                     <div class="copy">
-                        <h2>봄 신간 위크 🌿</h2>
-                        <p>신간 구매 시 굿즈 증정 & 포인트 최대 10%</p>
-                        <div class="cta">
-                            <a href="#" class="btn primary">신간 모아보기</a>
-                            <a href="#" class="btn ghost">굿즈 안내</a>
-                        </div>
+                       <div>이 책을 덮는 순간, '어제의 나'와 작별하게 될 겁니다</div>
+                       <img src="../static/img/위로의 방식.jpg"
+                            width="700" height="500">
                     </div>
                     <div>
-                        <!-- [수정됨] th:src="@{/img/...}" -->
-                        <img
-                                class="hero-img"
-                                th:src="@{/img/book1.jpeg}"
-                                alt="추천 도서 표지 이미지"
-                        />
+
                     </div>
                 </article>
                 <!-- slide 2 -->
                 <article class="slide" aria-roledescription="slide">
                     <div class="copy">
-                        <h2>베스트셀러 1위 🔥</h2>
-                        <p>이번 주 가장 많이 읽힌 책을 만나보세요</p>
-                        <div class="cta">
-                            <a href="#" class="btn primary">베스트 바로가기</a>
-                            <a href="#" class="btn ghost">리뷰 보기</a>
-                        </div>
+
                     </div>
                     <div>
-                        <div class="thumb" aria-hidden="true">BANNER</div>
+
                     </div>
                 </article>
                 <!-- slide 3 -->
                 <article class="slide" aria-roledescription="slide">
                     <div class="copy">
-                        <h2>eBook 특가전 ✨</h2>
-                        <p>전자책 최대 70% 할인! 지금 소장하세요</p>
-                        <div class="cta">
-                            <a href="#" class="btn primary">특가 보러가기</a>
-                            <a href="#" class="btn ghost">카테고리</a>
-                        </div>
                     </div>
                     <div>
-                        <div class="thumb" aria-hidden="true">BANNER</div>
+
                     </div>
                 </article>
             </div>
