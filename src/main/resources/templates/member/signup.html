@@ -338,6 +338,12 @@
       .footer-info .copyright strong {
         color: #c0c0c0;
       }
+
+      .gender{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+      }
     </style>
   </head>
   <body>
@@ -426,7 +432,13 @@
             />
           </div>
 
-          <button type="submit" class="login-btn">가입하기</button>
+            <div class="gender" id="gender">
+                <input type="radio">남
+                <input type="radio">여
+                <input type="radio">선택안함
+            </div>
+
+            <button type="submit" class="login-btn">가입하기</button>
         </form>
       </div>
     </main>
