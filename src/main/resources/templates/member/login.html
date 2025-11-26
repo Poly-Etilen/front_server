@@ -86,6 +86,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
 
+
       #header .container {
         display: flex;
         justify-content: space-between;
@@ -189,6 +190,23 @@
         background-color: var(--color-accent);
         color: white;
       }
+      .user-menu .user-link {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+      }
+
+      .user-menu .user-icon {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          transition: opacity 0.2s ease;
+      }
+
+      .user-menu .user-link:hover .user-icon {
+          opacity: 0.7;
+      }
+
 
       .writing {
         width: 100%;
@@ -375,12 +393,12 @@
       .sns-btn {
         width: 100%;
         padding: 12px;
-        border: 1px solid var(--color-border);
         border-radius: 4px;
         font-size: 15px;
         font-weight: 500;
-        background-color: #fee500; /* 카카오 예시 */
+        background-color: #007bff;
         color: #191919;
+        margin: 10px;
       }
 
       .sns-btn.payco {
@@ -514,7 +532,6 @@
               <div class="brand">HIGH-FIVE BOOKS</div>
           </a>
 
-
           <nav class="gnb" aria-label="주요 메뉴">
               <div class="search-box" role="search">
                   <input
@@ -528,10 +545,22 @@
 
          <div class="headerBar">
              <div class="user-menu">
-                 <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-                 <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-                 <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+                 <!-- 쿠폰 -->
+                 <a class="user-link" href="/coupon">
+                     <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+                 </a>
+
+                 <!-- 마이페이지 -->
+                 <a class="user-link" href="/mypage">
+                     <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+                 </a>
+
+                 <!-- 장바구니 -->
+                 <a class="user-link" href="/cart">
+                     <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+                 </a>
              </div>
+
          </div>
       </div>
   </header>
@@ -567,13 +596,16 @@
               </div>
           </div>
 
-          <button type="submit" class="login-btn">로그인</button>
-          <button type="submit" class="login2-btn">회원가입</button>
+<!--          form 태그 아님 -->
+<!--          <button type="submit" class="login-btn">로그인</button>-->
+<!--          <button type="submit" class="login2-btn">회원가입</button>-->
+
         </form>
 
         <div class="sns-login">
           <div class="divider">SNS 계정으로 로그인</div>
-          <button type="button" class="sns-btn payco">PAYCO 로그인</button>
+            <button type="button" class="sns-btn">로그인</button> <br>
+            <button type="button" class="sns-btn payco">PAYCO 로그인</button>
         </div>
       </div>
     </main>
@@ -637,7 +669,6 @@
         window.location.href = "../order/mypage.html";
       });
     }
-
 
     // ==== 비밀번호 보이기/숨기기 함수 ====
     function togglePasswordVisibility() {

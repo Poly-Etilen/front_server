@@ -173,6 +173,23 @@
         font-weight: 700;
         transition: all 0.2s ease;
       }
+      .user-menu .user-link {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+      }
+
+      .user-menu .user-icon {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          transition: opacity 0.2s ease;
+      }
+
+      .user-menu .user-link:hover .user-icon {
+          opacity: 0.7;
+      }
+
       /* ------------------------------------- */
       /* 3. 주문 페이지 레이아웃 및 스타일 */
       /* ------------------------------------- */
@@ -342,6 +359,23 @@
         color: var(--color-primary);
         font-weight: 700;
       }
+      /* 토스페이 스타일 */
+      .payment-methods span.toss-button {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Noto Sans KR", sans-serif;
+          border-radius: 999px;
+          border-color: #e5e5e5;
+          font-weight: 600;
+      }
+
+      /* 토스페이 선택 시 */
+      .payment-methods input[type="radio"][value="tosspay"]:checked + span.toss-button {
+          background-color: #0064ff; /* Toss 파란색 */
+          border-color: #0064ff;
+          color: #ffffff;
+      }
+
+
 
       /* 결제 요약 (Summary) */
       .summary-item {
@@ -454,10 +488,22 @@
           </nav>
 
           <div class="user-menu">
-              <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-              <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-              <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+              <!-- 쿠폰 -->
+              <a class="user-link" href="/coupon">
+                  <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+              </a>
+
+              <!-- 마이페이지 -->
+              <a class="user-link" href="/mypage">
+                  <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+              </a>
+
+              <!-- 장바구니 -->
+              <a class="user-link" href="/cart">
+                  <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+              </a>
           </div>
+
       </div>
   </header>
     <main id="container">
@@ -569,35 +615,36 @@
               </div>
             </div>
 
-            <div class="section-box">
-              <h2 class="section-title">결제 수단</h2>
-              <div class="payment-methods">
-                <label>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="card"
-                    checked
-                  />
-                  <span>신용/체크카드</span>
-                </label>
-                <label>
-                  <input type="radio" name="paymentMethod" value="bank" />
-                  <span>무통장입금</span>
-                </label>
-                <label>
-                  <input type="radio" name="paymentMethod" value="phone" />
-                  <span>휴대폰 결제</span>
-                </label>
-                <label>
-                  <input type="radio" name="paymentMethod" value="naverpay" />
-                  <span>네이버페이</span>
-                </label>
+              <div class="section-box">
+                  <h2 class="section-title">결제 수단</h2>
+                  <div class="payment-methods">
+                      <!-- 신용/체크카드 -->
+                      <label>
+                          <input
+                                  type="radio"
+                                  name="paymentMethod"
+                                  value="card"
+                                  checked
+                          />
+                          <span>신용/체크카드</span>
+                      </label>
+
+
+                      <!-- 토스페이 -->
+                      <label>
+                          <input
+                                  type="radio"
+                                  name="paymentMethod"
+                                  value="tosspay"
+                          />
+                          <span class="toss-button">TossPay 토스페이</span>
+                      </label>
+                  </div>
               </div>
             </div>
-          </div>
 
-          <div class="order-summary">
+
+              <div class="order-summary">
             <h2 style="margin-bottom: 25px; font-size: 22px">최종 결제 금액</h2>
 
             <div class="summary-item">
@@ -634,6 +681,7 @@
           </div>
         </div>
       </form>
+
     </main>
     <footer id="footer">
       <div class="container">

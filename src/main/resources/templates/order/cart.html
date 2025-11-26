@@ -136,6 +136,23 @@
         background: var(--color-accent);
         color: #fff;
       }
+      .user-menu .user-link {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+      }
+
+      .user-menu .user-icon {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          transition: opacity 0.2s ease;
+      }
+
+      .user-menu .user-link:hover .user-icon {
+          opacity: 0.7;
+      }
+
 
       /* ===== 장바구니 ===== */
       main {
@@ -358,7 +375,6 @@
                 <div class="brand">HIGH-FIVE BOOKS</div>
             </a>
 
-
             <nav class="gnb" aria-label="주요 메뉴">
                 <div class="search-box" role="search">
                     <input
@@ -366,15 +382,34 @@
                             placeholder="도서명, 저자, ISBN, 태그 검색"
                             aria-label="통합 검색"
                     />
-                    <button class="search-btn" aria-label="검색">검색</button>
+                  <form method="get" action="/search">
+                    <button class="search-btn"
+                            aria-label="검색"
+                            type="submit">
+                      검색
+                    </button>
+                  </form>
+
                 </div>
             </nav>
 
             <div class="user-menu">
-                <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-                <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-                <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+                <!-- 쿠폰 -->
+                <a class="user-link" href="/coupon">
+                    <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+                </a>
+
+                <!-- 마이페이지 -->
+                <a class="user-link" href="/mypage">
+                    <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+                </a>
+
+                <!-- 장바구니 -->
+                <a class="user-link" href="/cart">
+                    <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+                </a>
             </div>
+
         </div>
     </header>
 

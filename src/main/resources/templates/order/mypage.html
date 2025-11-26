@@ -177,6 +177,23 @@
             background: var(--color-accent);
             color: #fff;
         }
+        .user-menu .user-link {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .user-menu .user-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            transition: opacity 0.2s ease;
+        }
+
+        .user-menu .user-link:hover .user-icon {
+            opacity: 0.7;
+        }
+
 
         .container2 {
             max-width: 900px;
@@ -289,6 +306,109 @@
         .btn-edit:hover {
             background-color: #d6af50;
         }
+
+        /* 배송지 카드 */
+        .address-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .address-card {
+            border: 1px solid var(--color-border-light);
+            padding: 16px 18px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .address-left .addr-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        .address-left .addr-phone {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        .address-left .addr-addr {
+            font-size: 13px;
+            color: #444;
+        }
+
+        /* 버튼 */
+        .btn-outline-yellow {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--color-accent);
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 6px;
+            color: var(--color-accent);
+        }
+        .btn-outline-yellow:hover {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        .btn-outline {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+        .btn-outline:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        /* 등록 모달 */
+        .address-modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .address-modal-content {
+            background: white;
+            padding: 25px 28px;
+            border-radius: 12px;
+            width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-line {
+            padding: 8px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
 
         /* 쿠폰 */
         .coupon-grid {
@@ -438,6 +558,102 @@
             padding-left: 10px;
         }
 
+        /* 주문 내역 카드 */
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-card {
+            border: 1px solid var(--color-border-light);
+            border-radius: 12px;
+            padding: 18px 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+
+        .order-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--color-text-light);
+        }
+        .order-id strong {
+            font-size: 14px;
+            color: var(--color-text-dark);
+        }
+        .order-date {
+            color: #999;
+        }
+
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .badge-status.shipping {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .badge-status.completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .order-body {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            border-top: 1px solid var(--color-border-light);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        .order-product .title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .order-product .meta {
+            font-size: 12px;
+            color: var(--color-text-light);
+        }
+        .order-price {
+            text-align: right;
+            min-width: 120px;
+        }
+        .order-price .price {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .order-price .confirm-deadline {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .order-footer .small {
+            padding: 7px 12px;
+            font-size: 12px;
+        }
+
+        /* 구매확정 완료된 주문 카드 살짝 흐리게 */
+        .order-card.completed {
+            opacity: 0.9;
+        }
+
+
         /* === 독후감 탭 전용 스타일 === */
         .mp-card {
             background: #fff;
@@ -569,27 +785,92 @@
                         placeholder="검색어를 입력하세요"
                         aria-label="통합 검색"
                 />
-                <button class="search-btn" aria-label="검색">검색</button>
+                <form method="get" action="/search">
+                    <button class="search-btn"
+                            aria-label="검색"
+                            type="submit">
+                        검색
+                    </button>
+                </form>
             </div>
         </nav>
 
         <div class="user-menu">
-            <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-            <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-            <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+            <!-- 쿠폰 -->
+            <a class="user-link" href="/coupon">
+                <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+            </a>
+
+            <!-- 마이페이지 -->
+            <a class="user-link" href="/mypage">
+                <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+            </a>
+
+            <!-- 장바구니 -->
+            <a class="user-link" href="/cart">
+                <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+            </a>
         </div>
+
     </div>
 </header>
 
 <div class="container2">
     <nav class="box">
-        <button class="active" data-tab="info">내 정보</button>
-        <button data-tab="coupons">쿠폰</button>
-        <button data-tab="points">포인트</button>
-        <button data-tab="reading">독후감</button>
-        <button data-tab="orders">주문내역</button>
-        <button data-tab="reviews">리뷰</button>
-        <button data-tab="likes">찜 목록</button>
+
+<!--        // category controller에 추가하기-->
+
+<!--        @GetMapping("/mypage/{tab}")-->
+<!--        public String myPage(@PathVariable("tab") String activeTab, Model model) {-->
+<!--        // 1. URL 경로 변수로 현재 탭의 값을 받습니다. (예: /mypage/info)-->
+
+<!--        // 2. 모델에 현재 활성화된 탭의 값을 담아 HTML로 전달합니다.-->
+<!--        model.addAttribute("currentTab", activeTab);-->
+
+<!--        // 3. (선택) 해당 탭에 필요한 데이터를 모델에 추가로 담아 보냅니다.-->
+<!--        // if ("info".equals(activeTab)) {-->
+<!--        //     model.addAttribute("userInfo", userService.getUserInfo());-->
+<!--        // }-->
+
+<!--        return "mypage/myPageTemplate"; // Thymeleaf 템플릿 이름-->
+<!--        }-->
+<!--        -->
+
+<!--        // 타임리프 추가 -->
+        <button th:classappend="${currentTab == 'info'} ? 'active' : ''"
+                data-tab="info">
+            내 정보
+        </button>
+
+        <button th:classappend="${currentTab == 'address'} ? 'active' : ''"
+                data-tab="address">
+            배송지
+        </button>
+
+        <button th:classappend="${currentTab == 'coupons'} ? 'active' : ''"
+                data-tab="coupons">
+            쿠폰
+        </button>
+
+        <button th:classappend="${currentTab == 'points'} ? 'active' : ''"
+                data-tab="points">
+            포인트
+        </button>
+
+        <button th:classappend="${currentTab == 'orders'} ? 'active' : ''"
+                data-tab="orders">
+            주문내역
+        </button>
+
+        <button th:classappend="${currentTab == 'reviews'} ? 'active' : ''"
+                data-tab="reviews">
+            리뷰
+        </button>
+
+        <button th:classappend="${currentTab == 'likes'} ? 'active' : ''"
+                data-tab="likes">
+            찜 목록
+        </button>
     </nav>
 
     <section id="tab-info" class="tab-content active">
@@ -615,16 +896,83 @@
                 <label>회원 등급</label>
                 <div>일반</div>
             </div>
-            <div class="info-item">
-                <label>배송지</label>
-                <div>서울특별시 마포구 홍익로 12</div>
-            </div>
         </div>
 
         <br />
 
-        <button type="button" class="btn-edit">수정</button>
+        <form method="post" action="">
+            <button type="button" class="btn-edit">수정</button>
+        </form>
     </section>
+
+    <section id="tab-address" class="tab-content">
+        <h2 class="section-title">배송지 관리</h2>
+
+        <!-- 상단 안내 -->
+        <div style="margin-bottom: 15px; color: #777; font-size: 14px;">
+            저장 가능한 배송지는 최대 <strong>10개</strong>입니다.
+        </div>
+
+        <!-- 배송지 리스트 -->
+        <div id="address-list" class="address-list">
+            <!-- 주소 카드 하나 -->
+            <div class="address-card">
+                <div class="address-left">
+                    <div class="addr-name">홍길동</div>
+                    <div class="addr-phone">010-1234-5678</div>
+                    <div class="addr-addr">서울특별시 마포구 홍익로 12 (기본 배송지)</div>
+                </div>
+
+                <div class="address-actions">
+                    <button class="btn-outline-yellow">기본 설정</button>
+                    <button class="btn-outline">수정</button>
+                    <button class="btn-outline delete-btn">삭제</button>
+                </div>
+            </div>
+
+            <div class="address-card">
+                <div class="address-left">
+                    <div class="addr-name">홍길동</div>
+                    <div class="addr-phone">010-9876-5432</div>
+                    <div class="addr-addr">서울특별시 강남구 테헤란로 211</div>
+                </div>
+
+                <div class="address-actions">
+                    <button class="btn-outline-yellow">기본 설정</button>
+                    <button class="btn-outline">수정</button>
+                    <button class="btn-outline delete-btn">삭제</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주소 등록 버튼 -->
+        <button id="add-address-btn" class="btn-edit" style="margin-top: 25px;">
+            + 배송지 추가하기
+        </button>
+
+        <!-- 주소 입력 모달 (간단버전) -->
+        <div id="address-modal" class="address-modal">
+            <div class="address-modal-content">
+                <h3>배송지 추가</h3>
+
+                <label>이름</label>
+                <input type="text" placeholder="이름 입력" class="input-line"/>
+
+                <label>연락처</label>
+                <input type="text" placeholder="ex) 010-1234-5678" class="input-line"/>
+
+                <label>주소</label>
+                <input type="text" placeholder="도로명 주소 입력" class="input-line"/>
+
+                <div class="modal-actions">
+                    <button class="btn-outline" id="modal-cancel">취소</button>
+                    <button class="btn-primary" id="modal-save">저장</button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
 
     <section id="tab-coupons" class="tab-content">
         <h2 class="section-title">보유 쿠폰함 (4개)</h2>
@@ -700,7 +1048,10 @@
                 </div>
                 <div class="coupon-condition">모든 도서에 적용 가능</div>
                 <div class="coupon-actions">
-                    <button class="btn btn-secondary">삭제</button>
+<!--                    // action API로 수정 -->
+                   <form method="delete" action="./">
+                       <button class="btn btn-secondary">삭제</button>
+                   </form>
                 </div>
             </div>
         </div>
@@ -735,125 +1086,100 @@
             </div>
             <div class="history-item">
                 <span class="history-desc">리뷰 작성 보너스 (2025.10.16)</span>
-                <span class="history-amount" style="color: var(--color-primary)"
-                >+ 500 P</span
-                >
+                <span class="history-amount" style="color: var(--color-primary)">+ 500 P</span>
             </div>
-        </div>
-    </section>
-
-    <!-- 독후감 탭 -->
-    <section id="tab-reading" class="tab-content">
-        <!-- 상단 안내 박스 -->
-        <div class="mp-card mp-guide">
-            <h2>독후감 작성 안내</h2>
-            <p>
-                · 독후감 1편 작성 시 <strong>500P</strong> 적립됩니다. (월 최대 3편까지)<br />
-                · 본문 <strong>500자 이상</strong> 작성 시에만 포인트가 지급됩니다.<br />
-                · 욕설, 비방, 광고, 무의미한 글은 관리자에 의해 삭제 및 포인트 회수될 수 있습니다.
-            </p>
-        </div>
-
-        <!-- 작성 가능한 도서 목록 -->
-        <div class="mp-card">
-            <div class="mp-card-head">
-                <h3>독후감 작성 가능 도서</h3>
-                <span class="sub">최근 3개월 내 구매 도서 기준</span>
-            </div>
-            <table class="reading-table">
-                <thead>
-                <tr>
-                    <th>도서 정보</th>
-                    <th>구매일</th>
-                    <th>상태</th>
-                    <th>작성</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="reading-book-cell">
-                            <img src="../img/book1.jpeg" alt="표지" class="reading-thumb" />
-                            <div>
-                                <div class="title">프론트엔드 개발자를 위한 자바스크립트 바이블</div>
-                                <div class="meta">홍길동 · HIGH-FIVE 출판사</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>2025-11-10</td>
-                    <td><span class="badge badge-yellow">미작성</span></td>
-                    <td>
-                        <button
-                                type="button"
-                                class="btn-outline"
-                                onclick="location.href='/book/reading-note.html'"
-                        >
-                            독후감 작성
-                        </button>
-                    </td>
-                </tr>
-                <!-- 필요 시 반복 -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 내가 쓴 독후감 목록 -->
-        <div class="mp-card">
-            <div class="mp-card-head">
-                <h3>내가 쓴 독후감</h3>
-                <span class="sub">포인트 적립 내역과 함께 확인할 수 있습니다.</span>
-            </div>
-            <table class="reading-table">
-                <thead>
-                <tr>
-                    <th>도서 정보</th>
-                    <th>작성일</th>
-                    <th>별점</th>
-                    <th>포인트</th>
-                    <th>관리</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="reading-book-cell">
-                            <img src="../img/book1.jpeg" alt="표지" class="reading-thumb" />
-                            <div>
-                                <div class="title">프론트엔드 개발자를 위한 자바스크립트 바이블</div>
-                                <div class="meta">홍길동 · HIGH-FIVE 출판사</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>2025-11-18</td>
-                    <td>⭐⭐⭐⭐⭐</td>
-                    <td><strong>+500P</strong></td>
-                    <td>
-                        <button type="button" class="btn-outline">보기</button>
-                        <button type="button" class="btn-outline">수정</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </section>
 
     <section id="tab-orders" class="tab-content">
         <h2 class="section-title">주문 내역</h2>
-        <div class="empty-message">최근 3개월간 주문 내역이 없습니다.</div>
-    </section>
 
-    <section id="tab-reviews" class="tab-content">
-        <h2 class="section-title">리뷰 관리</h2>
-        <div class="empty-message">작성 가능한 리뷰가 2건 있습니다.</div>
-    </section>
-
-    <section id="tab-likes" class="tab-content">
-        <h2 class="section-title">좋아요</h2>
-        <div class="empty-message">
-            찜한 도서가 없습니다. 지금 베스트셀러를 확인해보세요!
+        <!-- 안내 문구 -->
+        <div style="margin-bottom: 15px; color: #777; font-size: 14px;">
+            상품 수령 후 <strong>10일 이내</strong>에 구매확정을 해 주세요.<br />
+            10일 이내에 구매확정을 하지 않을 경우, 시스템에서 <strong>자동으로 구매확정</strong> 처리됩니다.
         </div>
+
+        <!-- 주문 리스트 -->
+        <div class="order-list">
+
+            <!-- 주문 카드 1 : 아직 구매확정 가능 -->
+            <article class="order-card order-item"
+                     data-confirm-deadline="2025-12-05">
+                <header class="order-header">
+                    <div class="order-id">
+                        주문번호 <strong>2025-11-000123</strong>
+                    </div>
+                    <div class="order-date">주문일자 2025-11-25</div>
+                    <span class="badge-status shipping">배송완료</span>
+                </header>
+
+                <div class="order-body">
+                    <div class="order-product">
+                        <div class="title">어린 왕자 (개정판)</div>
+                        <div class="meta">문학동네 · 전자책 포함 1권</div>
+                    </div>
+                    <div class="order-price">
+                        <div class="price">39,800원</div>
+                        <div class="confirm-deadline"></div>
+                    </div>
+                </div>
+
+                <footer class="order-footer">
+                    <a href="/orders/2025-11-000123" class="btn-outline small">
+                        주문상세
+                    </a>
+                    <button type="button"
+                            class="btn-primary small btn-confirm">
+                        구매확정
+                    </button>
+                </footer>
+            </article>
+
+            <!-- 주문 카드 2 : 이미 10일 경과 → 자동 구매확정 상태 -->
+            <article class="order-card order-item"
+                     data-confirm-deadline="2025-11-10">
+                <header class="order-header">
+                    <div class="order-id">
+                        주문번호 <strong>2025-10-000045</strong>
+                    </div>
+                    <div class="order-date">주문일자 2025-10-20</div>
+                    <span class="badge-status completed">구매확정(자동)</span>
+                </header>
+
+                <div class="order-body">
+                    <div class="order-product">
+                        <div class="title">하이파이브 개발자 노트</div>
+                        <div class="meta">HIGH-FIVE BOOKS 출판 · 1권</div>
+                    </div>
+                    <div class="order-price">
+                        <div class="price">25,000원</div>
+                        <div class="confirm-deadline"></div>
+                    </div>
+                </div>
+
+                <footer class="order-footer">
+                    <a href="/orders/2025-10-000045" class="btn-outline small">
+                        주문상세
+                    </a>
+                    <button type="button"
+                            class="btn-primary small btn-confirm"
+                            disabled>
+                        구매확정 완료
+                    </button>
+                </footer>
+            </article>
+
+        </div>
+
+        <!-- 주문이 전혀 없을 때 사용하려면 아래만 남기고 위 order-list 제거 -->
+        <!--
+        <div class="empty-message">최근 3개월간 주문 내역이 없습니다.</div>
+        -->
     </section>
+
 </div>
+
 
 <script>
     // 마이페이지 탭 버튼만 선택 (헤더 검색 버튼 제외)
@@ -880,5 +1206,87 @@
         });
     });
 </script>
+<script>
+    const modal = document.getElementById("address-modal");
+    const addBtn = document.getElementById("add-address-btn");
+    const cancelBtn = document.getElementById("modal-cancel");
+    const saveBtn = document.getElementById("modal-save");
+    const addressList = document.getElementById("address-list");
+
+    addBtn.addEventListener("click", () => {
+        if (addressList.children.length >= 10) {
+            alert("배송지는 최대 10개까지 저장할 수 있습니다.");
+            return;
+        }
+        modal.style.display = "flex";
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    saveBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+        alert("배송지가 저장되었습니다. (백엔드 연동 필요)");
+    });
+</script>
+<script>
+    // 구매확정 버튼 / 자동확정 표시 처리
+    function updateConfirmButtons() {
+        const items = document.querySelectorAll(".order-item");
+
+        const today = new Date();
+
+        items.forEach((item) => {
+            const deadlineStr = item.dataset.confirmDeadline; // "2025-12-05"
+            if (!deadlineStr) return;
+
+            const deadline = new Date(deadlineStr + "T23:59:59");
+            const btn = item.querySelector(".btn-confirm");
+            const msg = item.querySelector(".confirm-deadline");
+
+            const diffMs = deadline.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffMs < 0) {
+                // 10일 지남 → 자동 구매확정 상태
+                item.classList.add("completed");
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "구매확정 완료";
+                }
+                if (msg) {
+                    msg.textContent = "구매확정 기한이 지나 자동으로 구매확정되었습니다.";
+                }
+            } else {
+                // 아직 구매확정 가능
+                if (msg) {
+                    msg.textContent = "구매확정 가능 기간 D-" + diffDays;
+                }
+            }
+
+            // 버튼 클릭 시 동작 (실제 API 연동 시 수정)
+            if (btn && !btn.disabled) {
+                btn.addEventListener("click", () => {
+                    const ok = confirm("이 주문을 구매확정 처리하시겠습니까?");
+                    if (!ok) return;
+
+                    // TODO: 백엔드에 구매확정 API 호출
+                    btn.disabled = true;
+                    btn.textContent = "구매확정 완료";
+                    item.classList.add("completed");
+                    if (msg) {
+                        msg.textContent = "구매확정이 완료되었습니다.";
+                    }
+                });
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateConfirmButtons);
+</script>
+
+
+
 </body>
 </html>

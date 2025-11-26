@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ko">
    <head>
     <meta charset="utf-8" />
@@ -177,6 +177,23 @@
         background-color: var(--color-accent);
         color: white;
       }
+      .user-menu .user-link {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+      }
+
+      .user-menu .user-icon {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          transition: opacity 0.2s ease;
+      }
+
+      .user-menu .user-link:hover .user-icon {
+          opacity: 0.7;
+      }
+
 
       /* 레이아웃 편의를 위한 .container 클래스 (기존 코드와 동일) */
       .container2 {
@@ -704,6 +721,12 @@
         background: var(--color-accent);
         color: #fff;
       }
+      .score {
+          font-size: 16px;
+          padding: 5px;
+          border-radius: 5px;
+      }
+
     </style>
   </head>
   <body>
@@ -714,7 +737,6 @@
               <div class="brand">HIGH-FIVE BOOKS</div>
           </a>
 
-
           <nav class="gnb" aria-label="주요 메뉴">
               <div class="search-box" role="search">
                   <input
@@ -722,15 +744,37 @@
                           placeholder="도서명, 저자, ISBN, 태그 검색"
                           aria-label="통합 검색"
                   />
-                  <button class="search-btn" aria-label="검색">검색</button>
+
+
+<!--                  // action="/search" 수정-->
+                  <form method="get" action="/search">
+                      <button class="search-btn"
+                              aria-label="검색"
+                              type="submit">
+                          검색
+                      </button>
+                  </form>
+
               </div>
           </nav>
 
           <div class="user-menu">
-              <a class="user-link" th:href="@{/order/mypage.html}">마이페이지</a>
-              <a class="user-link" th:href="@{/order/cart.html}">장바구니</a>
-              <a class="user-link pill" th:href="@{/member/login.html}">로그인</a>
+              <!-- 쿠폰 -->
+              <a class="user-link" href="/coupon">
+                  <img src="../img/icon-coupon.png" alt="쿠폰" class="user-icon" />
+              </a>
+
+              <!-- 마이페이지 -->
+              <a class="user-link" href="/mypage">
+                  <img src="../img/icon-mypage.png" alt="마이페이지" class="user-icon" />
+              </a>
+
+              <!-- 장바구니 -->
+              <a class="user-link" href="/cart">
+                  <img src="../img/icon-cart.png" alt="장바구니" class="user-icon" />
+              </a>
           </div>
+
       </div>
   </header>
 
@@ -753,6 +797,7 @@
               <span class="discount-rate">10%</span>
               <span class="final-price">40,500원</span>
             </div>
+
             <p
               style="
                 font-size: 14px;
@@ -766,27 +811,27 @@
             <div class="option-block">
                 <div class="option-block-title">포장 선택</div>
                 <div class="option-items" id="wrap-options">
-                    <button type="button"
-                            class="option-item active"
-                            data-value="N">
-                        포장 안 함
-                        <small>기본 옵션</small>
-                    </button>
-                    <button type="button"
-                            class="option-item"
-                            data-value="Y">
-                        포장
-                        <small>+1,000원</small>
-                    </button>
+
+                    <form method="post" action="" >
+                        <input type="submit" class="option-item active" data-value="N" value="포장안함">
+                    </form>
+
+                    <form method="post" action="" >
+                        <input type="submit"  class="option-item" data-value="Y" value="포장">
+                    </form>
+
                 </div>
                 <input type="hidden" name="wrapYn" id="wrapYn" value="N">
             </div>
 
 
-
           <div class="purchase-actions">
             <button class="btn-secondary">❤️</button>
-            <button class="btn-secondary">🛒 장바구니 담기</button>
+
+              <form class="btn-secondary" method="post" action="">
+                  <div>장바구니 담기</div>
+              </form>
+
             <button class="btn-primary">바로 구매</button>
           </div>
 
@@ -859,7 +904,16 @@
               <span class="review-user">사용자***</span>
               <span class="review-date">2025.11.05</span>
             </div>
-            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+
+            <div class="review-rating">
+                <select id="score" class="score">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
             <div class="review-body">
               바이블이라는 제목에 걸맞게 내용이 정말 방대하고 깊이가 있습니다.
               특히 비동기 처리 부분에서 막혔던 개념을 명확히 이해하게
@@ -872,7 +926,15 @@
               <span class="review-user">개발자**</span>
               <span class="review-date">2025.10.28</span>
             </div>
-            <div class="review-rating">⭐⭐⭐⭐</div>
+            <div class="review-rating">
+                <select id="score2" class="score">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
             <div class="review-body">
               초보자가 보기엔 조금 어려울 수 있지만, 중급 이상 개발자에게는
               필수적인 책입니다. 다만, 예제 코드의 업데이트가 조금 아쉽습니다.
@@ -891,26 +953,29 @@
           >
             궁금한 점이 있으신가요? 문의를 남겨주세요.
           </div>
-          <button
-            class="btn btn-primary"
-            style="align-self: flex-start; padding: 10px 20px"
-          >
-            문의 등록하기
-          </button>
+
+<!--            // action : 문의 등록하는 api로 수정-->
+           <form method="post" action="">
+               <input type="submit" value="문의 등록하기"  class="btn btn-primary"
+                      style="align-self: flex-start; padding: 10px 20px">
+           </form>
+
         </div>
       </section>
 
-      <section id="tab-info" class="detail-tab-content">
-        <h2 class="section-title">배송/환불 정보</h2>
-        <p style="font-size: 15px; line-height: 1.8">
-          **배송 정보:** 영업일 기준 2일 이내 출고되며, 3만원 이상 구매 시 무료
-          배송입니다.
-          <br />
-          **교환/환불:** 상품 수령 후 7일 이내에 신청 가능하며, 고객 변심 시
-          왕복 배송비가 부과될 수 있습니다. 자세한 내용은 고객센터를 통해 확인해
-          주세요.
-        </p>
-      </section>
+<!--        // 이걸 추가해야할까 .. -->
+<!--      <section id="tab-info" class="detail-tab-content">-->
+<!--        <h2 class="section-title">배송/환불 정보</h2>-->
+<!--        <p style="font-size: 15px; line-height: 1.8">-->
+<!--          **배송 정보:** 영업일 기준 2일 이내 출고되며, 3만원 이상 구매 시 무료-->
+<!--          배송입니다.-->
+<!--          <br />-->
+<!--          **교환/환불:** 상품 수령 후 7일 이내에 신청 가능하며, 고객 변심 시-->
+<!--          왕복 배송비가 부과될 수 있습니다. 자세한 내용은 고객센터를 통해 확인해-->
+<!--          주세요.-->
+<!--        </p>-->
+<!--      </section>-->
+
     </div>
     <footer id="footer">
       <div class="container">
