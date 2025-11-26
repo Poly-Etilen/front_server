@@ -1,48 +1,51 @@
-name: Front CI/CD (Blue/Green Docker)
+name: FrontEnd Service CI/CD
 
 on:
   push:
-    branches: [ "main", "dev", "feature/**" ]
+    branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev", "feature/**" ]
 
 jobs:
-  build-push-and-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
+
     steps:
-
       # 1. 코드 체크아웃
-      - uses: actions/checkout@v4
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
 
-      # 2. JDK 21 설정
-      - name: Set up JDK 21
+      # 2. JDK 설정 (Maven 빌드용)
+      - name: JDK 21 설정
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'maven'
+          cache: maven
 
-      # 3. Maven으로 .jar 빌드
-      - name: Build with Maven
-        run: mvn clean package
+      # 3. Maven 빌드 (소나큐브 제외!)
+      - name: Maven 빌드
+        run: mvn clean package -B -DskipTests
 
-      # ⬇️ 여기 로그인 코드가 있습니다 ⬇️
-      - name: Log in to Docker Hub
+      # 4. Docker Hub 로그인
+      - name: Docker Hub 로그인
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # ⬇️ 여기 Docker 빌드/푸시 코드가 있습니다 ⬇️
-      - name: Build and push Docker image
+      # 5. Docker 이미지 빌드 및 푸시
+      - name: Docker 이미지 빌드 및 푸시
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          tags: fbxogns123/front-server:latest
+          # 프론트엔드 이미지 이름에 맞게 수정하세요
+          tags: ${{ secrets.DOCKER_USERNAME }}/front-server:latest
 
-      # 4. SSH로 B/G 배포 스크립트 실행,
-      - name: Run Blue/Green Deploy Script on Server
+      # 6. 서버 접속 및 배포 (재생성 방식 적용)
+      - name: 서버 배포 (SSH)
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -50,41 +53,22 @@ jobs:
           password: ${{ secrets.SSH_PW }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            DEPLOY_PATH="~/www/nhnbook"
+            echo "🚀 Front Server 배포 시작..."
+            cd ~/www/nhnbook
+            
+            # 프론트 서버는 고정 포트(10483)를 쓰므로 기존 컨테이너를 꺼야 합니다.
+            CONTAINER_NAME="team5-front-server"
             SERVICE_NAME="front_server"
-            NGINX_CONF_PATH="/home/backend/be12-team5/nginx"
-            
-            # --- 🔵 프론트 포트 정의 (요청대로 수정) ---
-            BLUE_PORT="10483"
-            GREEN_PORT="10484"
-            
-            cd $DEPLOY_PATH
 
-            # --- 1. 현재 활성 'Front' 포트 확인 ---
-            CURRENT_FRONT_PORT=$(grep -o '[0-9]\{5\}' $NGINX_CONF_PATH/conf.d/front_upstream.conf)
-
-            # --- 2. 배포할 대상(Idle) 환경 결정 ---
-            if [ "$CURRENT_FRONT_PORT" == "$BLUE_PORT" ]; then
-              echo "Current Front is BLUE ($BLUE_PORT). Deploying to GREEN ($GREEN_PORT)..."
-              TARGET_COMPOSE_FILE="docker-compose-green.yml"
-              TARGET_FRONT_PORT=$GREEN_PORT
-            else
-              echo "Current Front is GREEN ($GREEN_PORT). Deploying to BLUE ($BLUE_PORT)..."
-              TARGET_COMPOSE_FILE="docker-compose-blue.yml"
-              TARGET_FRONT_PORT=$BLUE_PORT
-            fi
-
-            # --- 3. 비활성(Idle) 환경에 새 'front_server' 배포 ---
-            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE pull $SERVICE_NAME
-            docker-compose -f docker-compose-infra.yml -f $TARGET_COMPOSE_FILE up -d --no-deps $SERVICE_NAME
-
-            # --- 4. 헬스체크 (간단히 sleep) ---
-            echo "Waiting for 30 seconds for service to start..."
-            sleep 30 
+            echo "🛑 기존 컨테이너 중지 및 제거..."
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
             
-            # --- 5. Nginx 'Front' 트래픽 전환 ---
-            echo "Switching Nginx traffic to $TARGET_FRONT_PORT..."
-            echo "server 127.0.0.1:$TARGET_FRONT_PORT;" > $NGINX_CONF_PATH/conf.d/front_upstream.conf
+            echo "📥 최신 이미지 Pull..."
+            docker-compose pull $SERVICE_NAME
             
-            echo "Deployment successful! Front traffic now routed to $TARGET_FRONT_PORT."
+            echo "🔄 컨테이너 시작..."
+            docker-compose up -d $SERVICE_NAME
+            
             docker image prune -f
+            echo "✅ 배포 완료!"
