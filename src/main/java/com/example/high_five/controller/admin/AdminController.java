@@ -1,5 +1,6 @@
 package com.example.high_five.controller.admin;
 
+import com.example.high_five.controller.coupon.CouponCreateRequestDto;
 import com.example.high_five.dto.coupon.CouponPolicyRequestDto;
 import com.example.high_five.dto.coupon.CouponTemplateDto;
 import com.example.high_five.service.CouponService;
@@ -28,6 +29,13 @@ public class AdminController {
     public String createPolicy(@ModelAttribute CouponPolicyRequestDto dto) {
         couponService.createCouponPolicy(dto);
 
+        return "redirect:/admin/coupons.html";
+    }
+
+    @PostMapping("/admin/coupons/create")
+    public String createCouponTemplate(@ModelAttribute CouponCreateRequestDto dto) {
+        // 폼 데이터를 받아 쿠폰 서버로 전송
+        couponService.createCouponTemplate(dto);
         return "redirect:/admin/coupons.html";
     }
 }

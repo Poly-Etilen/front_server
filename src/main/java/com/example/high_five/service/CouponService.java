@@ -1,5 +1,8 @@
 package com.example.high_five.service;
 
+import com.example.high_five.controller.coupon.CouponCreateRequestDto;
+import com.example.high_five.controller.coupon.CouponPolicyResponseDto;
+import com.example.high_five.controller.coupon.UserCouponIssueRequestDto;
 import com.example.high_five.dto.coupon.CouponPolicyRequestDto;
 import com.example.high_five.dto.coupon.CouponTemplateDto;
 import com.example.high_five.dto.coupon.MemberCouponResponseDto;
@@ -26,4 +29,14 @@ public interface CouponService {
 
     @PostMapping("/api/admin/coupon-policy")
     void createCouponPolicy(@RequestBody CouponPolicyRequestDto dto);
+
+    @PostMapping("/api/coupons/issue")
+    void issueCoupon(@RequestHeader("X-USER-ID") Long userId,
+                     @RequestBody UserCouponIssueRequestDto requestDto);
+
+    @GetMapping("/api/admin/coupon-policy")
+    List<CouponPolicyResponseDto> getAllPolicies();
+
+    @PostMapping("/api/admin/coupons")
+    void createCouponTemplate(@RequestBody CouponCreateRequestDto dto);
 }

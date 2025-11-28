@@ -49,9 +49,19 @@ public class CouponController {
 
     @PostMapping("/coupon/issue")
     public String issueCoupon(@RequestParam Long couponId) {
-        // TODO: 백엔드 API (POST /coupons/issue) 호출
-        System.out.println("쿠폰 발급 요청: " + couponId);
+        // 1. 임시 사용자 ID (로그인 구현 전이므로 1번 사용자로 고정)
+        Long userId = 1L;
 
+        try {
+            UserCouponIssueRequestDto requestDto = new UserCouponIssueRequestDto(couponId);
+
+            couponService.issueCoupon(userId, requestDto);
+
+            System.out.println("쿠폰 발급 성공! ID: " + couponId);
+
+        } catch (Exception e) {
+            System.err.println("쿠폰 발급 실패: " + e.getMessage());
+        }
         return "redirect:/mypage?tab=coupons";
     }
 }
