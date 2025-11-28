@@ -246,7 +246,7 @@
                     <div class="form-row">
                         <label>쿠폰 용도</label>
                         <select name="comment">
-                            <option value="WELCOME">WELCOME (가입 인사)</option>
+                            <option value="WELCOME">WELCOME (신규 가입)</option>
                             <option value="BIRTHDAY">BIRTHDAY (생일)</option>
                             <option value="EVENT">EVENT (이벤트)</option>
                         </select>
@@ -276,28 +276,30 @@
             </div>
 
             <div class="card">
-                <h3>등록된 쿠폰 목록</h3>
+                <h3>등록된 쿠폰 정책 목록</h3>
 
                 <table class="coupon-table">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>쿠폰 이름</th>
-                        <th>설명</th>
-                        <th>발행 수량</th>
-                        <th>유효 기간</th>
+                        <th>할인 타입</th>
+                        <th>할인 값</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="coupon : ${coupons}">
-                        <td th:text="${coupon.id}">1</td>
-                        <td th:text="${coupon.couponName}">신규 가입 쿠폰</td>
-                        <td th:text="${coupon.description}">설명</td>
-                        <td th:text="${coupon.issueCount} + '장'">1000장</td>
-                        <td th:text="${coupon.validPeriodDate} + '일'">30일</td>
+                    <tr th:each="policy : ${policies}">
+                        <td th:text="${policy.id}">1</td>
+                        <td th:text="${policy.name}">겨울 세일 정책</td>
+                        <td th:text="${policy.discountType}">FIXED</td>
+                        <td>
+                            <span th:text="${policy.discountValue}">1000</span>
+                            <span th:if="${policy.discountType == 'FIXED'}">원</span>
+                            <span th:if="${policy.discountType == 'PERCENTAGE'}">%</span>
+                        </td>
                     </tr>
-                    <tr th:if="${#lists.isEmpty(coupons)}">
-                        <td colspan="5" style="text-align: center; padding: 20px;">등록된 쿠폰이 없습니다.</td>
+                    <tr th:if="${#lists.isEmpty(policies)}">
+                        <td colspan="5" style="text-align: center; padding: 20px;">등록된 쿠폰 정책이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
@@ -359,7 +361,7 @@
             </div>
 
             <div class="card">
-                <h3>등록된 쿠폰 주문 목록</h3>
+                <h3>등록된 쿠폰 목록</h3>
 
                 <table class="coupon-table">
                     <thead>
