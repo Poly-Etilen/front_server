@@ -872,7 +872,7 @@
            th:classappend="${currentTab == 'likes'} ? 'active'" class="tab-btn">찜 목록</a>
     </nav>
 
-    <section id="tab-info" class="tab-content active" th:classappend="${currentTab == 'info'} ? 'active'">
+    <section id="tab-info" class="tab-content" th:classappend="${currentTab == 'info'} ? 'active'">
         <h2 class="section-title">내 정보</h2>
         <div class="info-group">
             <div class="info-item">
@@ -903,7 +903,7 @@
     </section>
 
     <section id="tab-address" class="tab-content"
-             th:classappend="${currentTab == 'address'} ? 'active'">
+             th:classappend="${currentTab == 'address'} ? 'active' : ''">
         <h2 class="section-title">배송지 관리</h2>
         <div style="margin-bottom: 15px; color: #777; font-size: 14px;">
             저장 가능한 배송지는 최대 <strong>10개</strong>입니다.
@@ -926,7 +926,7 @@
 
 
     <section id="tab-coupons" class="tab-content"
-             th:classappend="${currentTab == 'coupons'} ? 'active'">
+             th:classappend="${currentTab == 'coupons'} ? 'active' : ''">
         <h2 class="section-title">보유 쿠폰함 (<span th:text="${couponCount}">0</span>개)</h2>
 
         <div class="coupon-grid">
@@ -964,7 +964,7 @@
     </section>
 
     <section id="tab-points" class="tab-content"
-             th:classappend="${currentTab == 'points'} ? 'active'">
+             th:classappend="${currentTab == 'coupons'} ? 'active' : ''">
         <h2 class="section-title">포인트 관리</h2>
         <div class="points-container">
             <div class="points-box">
@@ -991,7 +991,8 @@
         </div>
     </section>
 
-    <section id="tab-orders" class="tab-content">
+    <section id="tab-orders" class="tab-content"
+             th:classappend="${currentTab == 'orders'} ? 'active' : ''">
         <h2 class="section-title">주문 내역</h2>
 
         <!-- 안내 문구 -->
