@@ -4,3 +4,14 @@ server:
 spring:
   application:
     name: frontend_server
+
+    cloud:
+      compatibility-verifier:
+        enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # 유레카 서버 주소
+    register-with-eureka: true
+    fetch-registry: true
