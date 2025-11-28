@@ -1,6 +1,9 @@
 package com.example.high_five.controller.coupon;
 
 import com.example.high_five.dto.coupon.CouponTemplateDto;
+import com.example.high_five.service.CouponService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,17 +11,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 public class CouponController {
+
+    private final CouponService couponService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/coupon")
     public String couponRegisterPage(Model model){
-        List<CouponTemplateDto> templates = Arrays.asList(
-                new CouponTemplateDto(100L, "신규 도서 10% 할인", "최대 5,000원 할인 | 유효기간 30일", 10, "PERCENTAGE"),
-                new CouponTemplateDto(101L, "첫 구매 감사 3,000원", "5,000원 이상 구매 시 사용 가능", 3000, "FIXED")
-        );
+        List<CouponTemplateDto> templates = Collections.emptyList();
+
+        try {
+            // 1. 쿠폰 서버에서 발급 가능한 쿠폰 목록 조회 (Page 객체 -> Map)
+            Map<String, Object> response = couponService.getIssuableCoupons(0, 20);
+
+            // 2. "content" 필드 추출 및 DTO 변환
+            if (response != null && response.containsKey("content")) {
+                List<Map<String, Object>> content = (List<Map<String, Object>>) response.get("content");
+
+                templates = content.stream()
+                        .map(item -> objectMapper.convertValue(item, CouponTemplateDto.class))
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            System.err.println("쿠폰 서버 통신 오류 (발급존): " + e.getMessage());
+        }
 
         model.addAttribute("templates", templates);
         return "order/coupon-register";
@@ -29,6 +52,6 @@ public class CouponController {
         // TODO: 백엔드 API (POST /coupons/issue) 호출
         System.out.println("쿠폰 발급 요청: " + couponId);
 
-        return "redirect:/mypage?tab=coupons"; // 발급 후 마이페이지 쿠폰탭으로 이동
+        return "redirect:/mypage?tab=coupons";
     }
 }

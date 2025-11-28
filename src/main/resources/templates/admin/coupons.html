@@ -144,53 +144,110 @@
             color: #888;
             text-align: right;
         }
+        .coupon-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .coupon-table th, .coupon-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .coupon-table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
-<!-- 좌측 사이드바 -->
-<aside class="sidebar">
-    <h2>HIGHFIVE 관리자</h2>
-    <ul class="menu">
-        <li><a href="books.html" data-key="members">도서 관리</a></li>
-        <li><a href="points.html" data-key="points">포인트 정책 관리</a></li>
-        <li><a href="coupons.html" data-key="coupons">쿠폰 관리</a></li>
+<aside class="sidebar" style="width: 220px; background-color: #1e1e2f; color: #fff; padding: 20px; float: left; height: 100vh;">
+    <h2 style="color: #e9c46a;">HIGHFIVE 관리자</h2>
+    <ul class="menu" style="list-style: none; padding: 0;">
+        <li><a href="books.html" style="color: #ccc; text-decoration: none; display: block; padding: 10px;">도서 관리</a></li>
+        <li><a href="points.html" style="color: #ccc; text-decoration: none; display: block; padding: 10px;">포인트 정책 관리</a></li>
+        <li><a href="coupons.html" style="color: #e9c46a; text-decoration: none; display: block; padding: 10px; font-weight: bold;">쿠폰 관리</a></li>
     </ul>
 </aside>
 
-<!-- 메인 콘텐츠 -->
-<div style="flex:1; display:flex; flex-direction:column;">
-    <header>쿠폰 관리</header>
+<div style="margin-left: 240px; padding: 30px;">
+    <header style="margin-bottom: 20px;">
+        <h1>쿠폰 관리</h1>
+    </header>
 
     <main>
-        <div class="card">
-            <h3>쿠폰 관리</h3>
-            <div class="form-row">
+        <div class="card" style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px;">
+            <h3>쿠폰 정책 생성</h3>
+            <form action="/admin/policy/create" method="post">
+                <div class="form-row">
+                    <label>정책 이름</label>
+                    <input type="text" name="name" placeholder="예: 겨울 정기 세일 정책" required>
+                </div>
+                <div class="form-row">
+                    <label>쿠폰 용도</label>
+                    <select name="comment" style="padding: 10px; border-radius: 6px; border: 1px solid #ddd; flex: 1;">
+                        <option value="WELCOME">WELCOME (가입 인사)</option>
+                        <option value="BIRTHDAY">BIRTHDAY (생일)</option>
+                        <option value="EVENT">EVENT (이벤트)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>할인 타입</label>
+                    <select name="discountType" style="padding: 10px; border-radius: 6px; border: 1px solid #ddd; flex: 1;">
+                        <option value="FIXED">정액 할인 (원)</option>
+                        <option value="PERCENTAGE">정률 할인 (%)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>할인 값</label>
+                    <input type="number" name="discountValue" placeholder="금액 또는 %" required>
+                </div>
+                <div class="form-row">
+                    <label>최소 주문 금액</label>
+                    <input type="number" name="minOrderValue" placeholder="0" value="0">
+                </div>
+                <div class="form-row">
+                    <label>최대 할인 금액</label>
+                    <input type="number" name="maxDiscountValue" placeholder="정률 할인 시 적용" value="0">
+                </div>
 
-            </div>
-            <div class="form-row">
-                <label>생일 축하 쿠폰 (%)</label>
-                <input type="number" value="200">
-            </div>
-            <div class="form-row">
-                <label>첫 구매 환영 쿠폰 (%)</label>
-                <input type="number" value="500">
-            </div>
-            <div class="form-row">
-                <label>오픈 기념 쿠폰 (%)</label>
-                <input type="number" step="0.1" value="0.5">
-            </div>
-
-<!--            // action : 관리자 정책 저장하는 post api 주소-->
-            <form method="post" action="">
-                <input type="submit" value="정책 저장하기" class="save-btn">
+                <button type="submit" class="save-btn">정책 생성</button>
             </form>
+        </div>
+        <div class="card" style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3>등록된 쿠폰 목록</h3>
 
-            <div class="updated-info">최근 수정: 2025-11-10 (관리자 ID: 1)</div>
+            <table class="coupon-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>쿠폰 이름</th>
+                    <th>설명</th>
+                    <th>발행 수량</th>
+                    <th>유효 기간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="coupon : ${coupons}">
+                    <td th:text="${coupon.id}">1</td>
+                    <td th:text="${coupon.couponName}">신규 가입 쿠폰</td>
+                    <td th:text="${coupon.description}">설명</td>
+                    <td th:text="${coupon.issueCount} + '장'">1000장</td>
+                    <td th:text="${coupon.validPeriodDate} + '일'">30일</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(coupons)}">
+                    <td colspan="5" style="text-align: center; padding: 20px;">등록된 쿠폰이 없습니다.</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="updated-info" style="margin-top: 20px; text-align: right; color: #888; font-size: 13px;">
+                최근 조회: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+            </div>
         </div>
     </main>
 </div>
-<script src="assets/admin.js"></script>
 
 </body>
 </html>
