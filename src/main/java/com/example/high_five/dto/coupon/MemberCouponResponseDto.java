@@ -16,6 +16,6 @@ public class MemberCouponResponseDto {
     private String couponName;
     private String status;
     private Long discountValue;
-    private LocalDateTime expireAt;
+    private LocalDateTime expiredAt;
     private String condition;
 }

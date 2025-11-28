@@ -944,7 +944,7 @@
                 <div class="coupon-info">
                     <div class="info-item">
                         <span class="info-label">할인 금액</span>
-                        <span class="info-value" th:text="${#numbers.formatInteger(coupon.discountAmount, 0, 'COMMA') + '원'}">0원</span>
+                        <span class="info-value" th:text="${#numbers.formatInteger(coupon.discountValue, 0, 'COMMA') + '원'}">0원</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">유효기간</span>
